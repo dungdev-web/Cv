@@ -9,8 +9,8 @@ export default function CustomCursor() {
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
 
-  const smoothX = useSpring(mouseX, { stiffness: 300, damping: 30 });
-  const smoothY = useSpring(mouseY, { stiffness: 300, damping: 30 });
+  const smoothX = useSpring(mouseX, { stiffness: 600, damping: 40 });
+  const smoothY = useSpring(mouseY, { stiffness: 600, damping: 40 });
 
   useEffect(() => {
     const move = (e: MouseEvent) => {
@@ -20,17 +20,25 @@ export default function CustomCursor() {
 
     window.addEventListener("mousemove", move);
 
-    // detect hover on interactive elements
-    const addHoverEvents = () => {
-      const hoverables = document.querySelectorAll("a, button");
+    const hoverables = document.querySelectorAll("a, button, [data-cursor]");
 
-      hoverables.forEach((el) => {
-        el.addEventListener("mouseenter", () => setIsHover(true));
-        el.addEventListener("mouseleave", () => setIsHover(false));
+    hoverables.forEach((el) => {
+      el.addEventListener("mouseenter", (e) => {
+        setIsHover(true);
+
+        const rect = (e.target as HTMLElement).getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        // hút nhẹ cursor về tâm element
+        mouseX.set(centerX - 16);
+        mouseY.set(centerY - 16);
       });
-    };
 
-    addHoverEvents();
+      el.addEventListener("mouseleave", () => {
+        setIsHover(false);
+      });
+    });
 
     return () => {
       window.removeEventListener("mousemove", move);
@@ -45,8 +53,8 @@ export default function CustomCursor() {
         y: smoothY,
       }}
       animate={{
-        width: isHover ? 32 : 16,
-        height: isHover ? 32 : 16,
+        width: isHover ? 50 : 40,
+        height: isHover ? 50 : 40,
         backgroundColor: "white",
       }}
       transition={{

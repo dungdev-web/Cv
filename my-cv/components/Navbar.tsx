@@ -39,20 +39,23 @@ export default function Navbar() {
 
   // ✅ Scroll Spy
   useEffect(() => {
-    const sections = items.map((i) => document.getElementById(i.id)).filter(Boolean);
+    const sections = items
+      .map((i) => document.getElementById(i.id))
+      .filter(Boolean);
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActive(entry.target.id);
-          }
-        });
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visible.length > 0) {
+          setActive(visible[0].target.id);
+        }
       },
       {
-        rootMargin: "-40% 0px -40% 0px", // vùng active ở giữa màn hình
-        threshold: 0.1,
-      }
+        threshold: [0.2, 0.4, 0.6],
+      },
     );
 
     sections.forEach((section) => observer.observe(section!));
@@ -68,7 +71,6 @@ export default function Navbar() {
       className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur"
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
-
         {/* Logo */}
         <button
           onClick={() => handleScroll("hero")}

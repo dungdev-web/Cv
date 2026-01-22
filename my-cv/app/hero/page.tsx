@@ -78,7 +78,7 @@ export default function Hero() {
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
               Hi, I'm{" "}
               <span className="relative inline-block">
-                <span className="relative z-10 text-primary">Dũng</span>
+                <span className="relative z-10 text-primary">Lưu Đức Dũng</span>
                 <motion.span
                   className="absolute bottom-2 left-0 w-full h-3 bg-primary/20 z-0"
                   initial={{ width: 0 }}

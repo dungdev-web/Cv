@@ -28,7 +28,7 @@ const highlights = [
 ];
 
 const stats = [
-  { value: "10+", label: "Projects", icon: Rocket },
+  { value: "12+", label: "Projects", icon: Rocket },
   { value: "100%", label: "Passion", icon: Heart },
   { value: "24/7", label: "Learning", icon: Coffee },
 ];

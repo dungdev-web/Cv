@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Github, X } from "lucide-react";
-
+import MagneticButton from "@/components/MagneticButton";
 type Project = {
   id: string;
   title: string;
@@ -24,49 +24,148 @@ const projects: Project[] = [
     id: "todo",
     title: "Todo App",
     description: "Task management app with localStorage and filters.",
-    fullDescription: "A comprehensive task management application that helps you organize your daily tasks. Features include creating, editing, deleting tasks with persistent storage using localStorage. Includes filtering by status and due dates.",
-    image: "/api/placeholder/400/250",
-    tags: ["React", "Tailwind"],
-    features: ["Add/Edit/Delete tasks", "Filter by status", "Local storage persistence", "Responsive design"],
-    demo: "#",
-    github: "#",
+    fullDescription:
+      "A comprehensive task management application that helps you organize your daily tasks. Features include creating, editing, deleting tasks with persistent storage using localStorage. Includes filtering by status and due dates.",
+    image: "/todo.png",
+    tags: ["React", "Tailwind", "Node.js", "MUI"],
+    features: [
+      "Add/Edit/Delete tasks",
+      "Filter by status",
+      "Local storage persistence",
+      "Responsive design",
+    ],
+    demo: "https://quan-ly-thoi-gian.vercel.app/",
+    github: "https://github.com/dungdev-web/quan_ly_thoi_gian",
   },
   {
     id: "auth-ui",
     title: "Authentication UI",
     description: "Login / Register UI with validation and Material UI.",
-    fullDescription: "Beautiful and functional authentication interface with form validation. Supports both login and registration flows with real-time validation feedback, password strength indicator, and error handling.",
-    image: "/api/placeholder/400/250",
+    fullDescription:
+      "Beautiful and functional authentication interface with form validation. Supports both login and registration flows with real-time validation feedback, password strength indicator, and error handling.",
+    image: "/login.png",
     tags: ["React", "MUI"],
-    features: ["Form validation", "Password strength meter", "Email verification", "Error handling"],
+    features: [
+      "Form validation",
+      "Password strength meter",
+      "Email verification",
+      "Error handling",
+    ],
     demo: "#",
-    github: "#",
+    github: "https://github.com/dungdev-web/Login_MUI",
   },
   {
     id: "portfolio",
     title: "Personal Portfolio",
     description: "My portfolio built with Next.js, Tailwind and Framer Motion.",
-    fullDescription: "A modern, interactive portfolio website showcasing my work and skills. Built with cutting-edge technologies, featuring smooth animations, dark mode support, and optimized performance.",
-    image: "/api/placeholder/400/250",
+    fullDescription:
+      "A modern, interactive portfolio website showcasing my work and skills. Built with cutting-edge technologies, featuring smooth animations, dark mode support, and optimized performance.",
+    image: "/porfordio.png",
     tags: ["Next.js", "Tailwind", "Framer Motion"],
-    features: ["Smooth animations", "Dark mode", "SEO optimized", "Mobile responsive"],
-    demo: "#",
-    github: "#",
+    features: [
+      "Smooth animations",
+      "Dark mode",
+      "SEO optimized",
+      "Mobile responsive",
+    ],
+    demo: "https://cv-five-beige.vercel.app/",
+    github: "https://github.com/dungdev-web/Cv",
   },
   {
     id: "quiz",
     title: "Quiz Game",
     description: "Quiz app with timer, score, streak and categories.",
-    fullDescription: "An engaging quiz game with multiple categories, real-time scoring, and competitive gameplay. Features include timed questions, streak tracking, and detailed results analysis.",
-    image: "/api/placeholder/400/250",
-    tags: ["JavaScript", "HTML", "CSS"],
-    features: ["Multiple categories", "Timer system", "Streak tracking", "Score analysis"],
-    demo: "#",
+    fullDescription:
+      "An engaging quiz game with multiple categories, real-time scoring, and competitive gameplay. Features include timed questions, streak tracking, and detailed results analysis.",
+    image: "/my-quizz.png",
+    tags: ["JavaScript", "HTML", "CSS", "Tailwind"],
+    features: [
+      "Multiple categories",
+      "Timer system",
+      "Streak tracking",
+      "Score analysis",
+    ],
+    demo: "https://my-quizz-inky.vercel.app/",
+    github: "https://github.com/dungdev-web/my_quizz",
+  },
+  {
+    id: "weather",
+    title: "Weather App",
+    description: "Task management app with localStorage and filters.",
+    fullDescription:
+      "The Weather App is a web application that uses an API to display weather information for the city the user searches for. The app provides basic information such as temperature, humidity, weather conditions, and daily forecasts. The interface is designed to be responsive and easy to use on various devices. This project helps develop skills in working with APIs, handling asynchronous data, and building user interfaces.",
+    image: "/weather.png",
+    tags: ["React", "Tailwind", "API"],
+    features: [
+      "Add/Edit/Delete tasks",
+      "Filter by status",
+      "Local storage persistence",
+      "Responsive design",
+    ],
+    demo: "https://weather-ten-livid.vercel.app/",
     github: "#",
+  },
+  {
+    id: "budget",
+    title: "Budget App",
+    description:
+      "Personal expense management app with statistical charts and income/expense categorization.",
+    fullDescription:
+      "The Personal Budget App is a web application that helps users track and manage their daily income and expenses. The app supports income and expense categorization and is currently developing visual statistical charts by time period and category. Data is stored in Firebase for long-term use, and the interface is designed to be responsive and compatible with various devices. This project helps develop data processing skills, visualization through charts, and the creation of a basic personal finance management application.",
+    image: "/budget.png",
+    tags: ["React", "Firebase"],
+    features: [
+      "Add/Edit/Delete tasks",
+      "Filter by status",
+      "Local storage persistence",
+      "Responsive design",
+    ],
+    demo: "https://weather-ten-livid.vercel.app/",
+    github: "https://github.com/dungdev-web/budget",
+  },
+  {
+    id: "personal-blog",
+    title: "Personal Blog",
+    description:
+      "Personal expense management app with statistical charts and income/expense categorization.",
+    fullDescription:
+      "Personal Blog is a website that shares programming knowledge, supports writing articles using Markdown, categorizes articles by topic, and allows content searching. The website has a responsive interface and displays well on various devices. This project helps develop skills in building content systems, processing article data, and developing a complete blog website.",
+    image: "/blog.png",
+    tags: ["React", "Firebase", "Markdown"],
+    features: [
+      "Add/Edit/Delete tasks",
+      "Filter by status",
+      "Local storage persistence",
+      "Responsive design",
+    ],
+    demo: "https://personal-blog-silk-ten.vercel.app/",
+    github: "https://github.com/dungdev-web/personal_blog",
+  },
+  {
+    id: "ecommerce-shoes",
+    title: "Ecommerce Shoes",
+    description:
+      "Modern e-commerce website for selling shoes with product filtering, cart, and checkout.",
+    fullDescription:
+      "Ecommerce Shoes is a modern online shopping website specialized in selling shoes. The application allows users to browse products, filter by categories, view product details, add items to cart, and proceed to checkout. The project focuses on building a clean UI, smooth user experience, and reusable components. It also helps practice state management, product listing, and basic e-commerce flows.",
+    image: "/nodejs.png",
+    tags: ["React", "Tailwind", "MongoDB","HTML","Node.js"],
+    features: [
+      "Product listing and product details page",
+      "Filter by category, price, and brand",
+      "Add to cart and remove from cart",
+      "Checkout flow and order summary",
+      "Responsive design for all devices",
+    ],
+    demo: "#",
+    github: "https://github.com/dungdev-web/NodeJs",
   },
 ];
 
-const allTags = ["All", ...Array.from(new Set(projects.flatMap(p => p.tags)))];
+const allTags = [
+  "All",
+  ...Array.from(new Set(projects.flatMap((p) => p.tags))),
+];
 
 const backdropVariants = {
   hidden: { opacity: 0 },
@@ -88,11 +187,12 @@ const modalVariants = {
 export default function Projects() {
   const [activeTag, setActiveTag] = useState("All");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [comingSoon, setComingSoon] = useState<string | null>(null);
 
   const filtered =
     activeTag === "All"
       ? projects
-      : projects.filter(p => p.tags.includes(activeTag));
+      : projects.filter((p) => p.tags.includes(activeTag));
 
   return (
     <section
@@ -108,7 +208,7 @@ export default function Projects() {
         className="text-center mb-14"
       >
         <h2 className="text-4xl md:text-5xl font-bold mb-4">
-          My <span className="text-blue-600">Projects</span>
+          My <span>Projects</span>
         </h2>
         <p className="text-gray-600 max-w-2xl mx-auto">
           Here are some projects I built while learning and practicing frontend
@@ -118,7 +218,7 @@ export default function Projects() {
 
       {/* Filter */}
       <div className="flex flex-wrap justify-center gap-3 mb-12">
-        {allTags.map(tag => (
+        {allTags.map((tag) => (
           <Button
             key={tag}
             variant={activeTag === tag ? "default" : "outline"}
@@ -132,12 +232,9 @@ export default function Projects() {
       </div>
 
       {/* Grid */}
-      <motion.div
-        layout
-        className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8"
-      >
+      <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <AnimatePresence>
-          {filtered.map(project => (
+          {filtered.map((project) => (
             <motion.div
               key={project.id}
               layout
@@ -146,9 +243,13 @@ export default function Projects() {
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.3 }}
             >
-              <Card className="overflow-hidden group h-full flex flex-col hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+              <Card
+                data-cursor-stick
+                data-cursor-text="OPEN"
+                className="overflow-hidden group h-full flex flex-col hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+              >
                 {/* Image */}
-                <div 
+                <div
                   className="relative overflow-hidden"
                   onClick={() => setSelectedProject(project)}
                 >
@@ -166,17 +267,19 @@ export default function Projects() {
 
                 {/* Content */}
                 <div className="p-6 flex flex-col flex-1">
-                  <h3 className="text-xl font-bold mb-2">
-                    {project.title}
-                  </h3>
+                  <h3 className="text-xl font-bold mb-2">{project.title}</h3>
                   <p className="text-gray-600 text-sm mb-4 flex-1">
                     {project.description}
                   </p>
 
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tags.map(tag => (
-                      <Badge key={tag} variant="secondary" className="rounded-full">
+                    {project.tags.map((tag) => (
+                      <Badge
+                        key={tag}
+                        variant="secondary"
+                        className="rounded-full"
+                      >
                         {tag}
                       </Badge>
                     ))}
@@ -185,11 +288,18 @@ export default function Projects() {
                   {/* Actions */}
                   <div className="flex gap-3">
                     {project.demo && (
-                      <Button 
-                        size="sm" 
+                      <Button
+                        size="sm"
                         className="gap-2 flex-1"
                         onClick={(e) => {
                           e.stopPropagation();
+
+                          if (project.demo === "#" || !project.demo) {
+                            setComingSoon("Demo đang được phát triển 🚧");
+                            return;
+                          }
+
+                          window.open(project.demo, "_blank");
                         }}
                       >
                         <ExternalLink className="w-4 h-4" />
@@ -197,17 +307,25 @@ export default function Projects() {
                       </Button>
                     )}
                     {project.github && (
-                      <Button 
-                        size="sm" 
-                        variant="outline" 
-                        className="gap-2 flex-1"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
-                      >
-                        <Github className="w-4 h-4" />
-                        Code
-                      </Button>
+                      <MagneticButton>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="gap-2 flex-1"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (project.github === "#") {
+                              setComingSoon("Code đang được cập nhật 🚧");
+                            } else {
+                              window.open(project.github, "_blank");
+                            }
+                          }}
+                          data-cursor-stick
+                        >
+                          <Github className="w-4 h-4" />
+                          Code
+                        </Button>
+                      </MagneticButton>
                     )}
                   </div>
                 </div>
@@ -231,7 +349,7 @@ export default function Projects() {
             <motion.div
               variants={modalVariants}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              className="bg-background rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
             >
               {/* Header */}
               <div className="relative h-64 overflow-hidden">
@@ -242,7 +360,7 @@ export default function Projects() {
                 />
                 <button
                   onClick={() => setSelectedProject(null)}
-                  className="absolute top-4 right-4 bg-white/90 hover:bg-white rounded-full p-2 transition-all duration-200 hover:scale-110"
+                  className="absolute top-4 right-4  hover:bg-white rounded-full p-2 transition-all duration-200 hover:scale-110"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -256,9 +374,9 @@ export default function Projects() {
                     {selectedProject.title}
                   </h2>
                   <div className="flex flex-wrap gap-2">
-                    {selectedProject.tags.map(tag => (
-                      <Badge 
-                        key={tag} 
+                    {selectedProject.tags.map((tag) => (
+                      <Badge
+                        key={tag}
                         className="rounded-full bg-blue-100 text-blue-800"
                       >
                         {tag}
@@ -270,7 +388,7 @@ export default function Projects() {
                 {/* Description */}
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold mb-2">Mô tả</h3>
-                  <p className="text-gray-700 leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed">
                     {selectedProject.fullDescription}
                   </p>
                 </div>
@@ -278,7 +396,9 @@ export default function Projects() {
                 {/* Features */}
                 {selectedProject.features && (
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold mb-3">Tính năng chính</h3>
+                    <h3 className="text-lg font-semibold mb-3">
+                      Tính năng chính
+                    </h3>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {selectedProject.features.map((feature, idx) => (
                         <motion.li
@@ -286,7 +406,7 @@ export default function Projects() {
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: idx * 0.1 }}
-                          className="flex items-center gap-2 text-gray-700"
+                          className="flex items-center gap-2 text-muted-foreground"
                         >
                           <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
                           {feature}
@@ -299,25 +419,33 @@ export default function Projects() {
                 {/* Actions */}
                 <div className="flex gap-3">
                   {selectedProject.demo && (
-                    <Button 
-                      size="lg" 
+                    <Button
+                      size="lg"
                       className="gap-2 flex-1"
-                      asChild
+                      onClick={() => {
+                        if (selectedProject.demo === "#") {
+                          setComingSoon("Demo đang được phát triển 🚧");
+                        } else {
+                          window.open(selectedProject.demo, "_blank");
+                        }
+                      }}
                     >
-                      <a href={selectedProject.demo} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="w-5 h-5" />
-                        Xem demo
-                      </a>
+                      <ExternalLink className="w-5 h-5" />
+                      Xem demo
                     </Button>
                   )}
                   {selectedProject.github && (
-                    <Button 
-                      size="lg" 
-                      variant="outline" 
+                    <Button
+                      size="lg"
+                      variant="outline"
                       className="gap-2 flex-1"
                       asChild
                     >
-                      <a href={selectedProject.github} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={selectedProject.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <Github className="w-5 h-5" />
                         Xem code
                       </a>
@@ -326,6 +454,19 @@ export default function Projects() {
                 </div>
               </div>
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {comingSoon && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-999 bg-black text-white px-6 py-3 rounded-full shadow-xl"
+            onClick={() => setComingSoon(null)}
+          >
+            {comingSoon}
           </motion.div>
         )}
       </AnimatePresence>
