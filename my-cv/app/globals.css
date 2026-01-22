@@ -130,3 +130,46 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+background: var(--background);
+
+}
+/* From Uiverse.io by ilkhoeri */ 
+.loader {
+  --dasharray: 2000px; /* tăng lên cho màn hình rộng */
+  position: relative;
+  width: 100vw;
+  height: 200px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-svg {
+  width: 100vw;
+  height: 100%;
+}
+
+.loader-svg path {
+  stroke-dasharray: var(--dasharray);
+  animation: heartRate 4s linear infinite;
+}
+
+
+@keyframes heartRate {
+  from {
+    stroke-dashoffset: var(--dasharray);
+  }
+  to {
+    stroke-dashoffset: calc(var(--dasharray) * -1);
+  }
+}

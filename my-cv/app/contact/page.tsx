@@ -16,48 +16,49 @@ import {
   Globe,
 } from "lucide-react";
 import { Github, Linkedin, Twitter, ExternalLink, Zap } from "lucide-react";
-
+import { toast } from "sonner";
 import { useState } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { contactSchema, ContactFormValues } from "@/lib/validators/contact";
 export default function Contact() {
   const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
-    const data = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      subject: formData.get("subject"),
-      message: formData.get("message"),
-      createdAt: serverTimestamp(),
-    };
-
+  const form = useForm<ContactFormValues>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
+  });
+  const handleSubmit = async (values: ContactFormValues) => {
     try {
       setLoading(true);
 
-      await addDoc(collection(db, "contacts"), data);
+      await addDoc(collection(db, "contacts"), {
+        ...values,
+        createdAt: serverTimestamp(),
+      });
 
-      alert("✅ Message sent successfully!");
+      toast.success("Message sent successfully!");
       form.reset();
     } catch (err) {
       console.error(err);
-      alert("❌ Failed to send message!");
+      toast.error("Failed to send message!");
     } finally {
       setLoading(false);
     }
   };
 
   const socialLinks = [
-    { icon: Github, label: "GitHub", url: "#", color: "hover:text-blue-600" },
+    { icon: Github, label: "GitHub", url: "https://github.com/dungdev-web/", color: "hover:text-blue-600" },
     {
       icon: Linkedin,
       label: "LinkedIn",
-      url: "#",
+      url: "https://www.linkedin.com/in/dev-d%C5%A9ng-15b3143a2/",
       color: "hover:text-blue-500",
     },
     { icon: Twitter, label: "Twitter", url: "#", color: "hover:text-sky-500" },
@@ -160,25 +161,47 @@ export default function Contact() {
         >
           {/* Form */}
           <Card className="p-6">
-            <form className="space-y-4" onSubmit={handleSubmit}>
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="space-y-4"
+            >
               <div className="grid grid-cols-2 gap-4">
-                <Input name="name" placeholder="Your name" required />
-                <Input
-                  name="email"
-                  placeholder="Your email"
-                  type="email"
-                  required
-                />
+                <div>
+                  <Input placeholder="Your name" {...form.register("name")} />
+                  <p className="text-sm text-red-500">
+                    {form.formState.errors.name?.message}
+                  </p>
+                </div>
+
+                <div>
+                  <Input
+                    placeholder="Your email"
+                    type="email"
+                    {...form.register("email")}
+                  />
+                  <p className="text-sm text-red-500">
+                    {form.formState.errors.email?.message}
+                  </p>
+                </div>
               </div>
 
-              <Input name="subject" placeholder="Subject" required />
+              <div>
+                <Input placeholder="Subject" {...form.register("subject")} />
+                <p className="text-sm text-red-500">
+                  {form.formState.errors.subject?.message}
+                </p>
+              </div>
 
-              <Textarea
-                name="message"
-                placeholder="Your message..."
-                rows={5}
-                required
-              />
+              <div>
+                <Textarea
+                  placeholder="Your message..."
+                  rows={5}
+                  {...form.register("message")}
+                />
+                <p className="text-sm text-red-500">
+                  {form.formState.errors.message?.message}
+                </p>
+              </div>
 
               <Button className="w-full gap-2" disabled={loading}>
                 <Send className="w-4 h-4" />

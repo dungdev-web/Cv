@@ -161,14 +161,42 @@ export default function Footer() {
           </p>
 
           <motion.button
-            whileHover={{ y: -2 }}
-            whileTap={{ y: 0 }}
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="inline-flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200"
-          >
-            Back to top
-            <ArrowUp className="w-4 h-4" />
-          </motion.button>
+  whileHover={{ y: -2 }}
+  whileTap={{ y: 0 }}
+  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+  className="
+    cursor-pointer relative
+    after:content-['Scroll_to_top']
+    after:absolute after:whitespace-nowrap
+    after:scale-0 hover:after:scale-100 after:duration-200
+    after:text-sm after:font-medium
+    after:text-foreground
+
+    w-16 h-16 rounded-full
+    border-2 border-border
+    bg-background text-foreground
+
+    flex items-center justify-center
+    duration-300
+    hover:rounded-[50px] hover:w-36
+    group/button overflow-hidden
+    active:scale-90
+    shadow-md hover:shadow-lg
+  "
+>
+  <svg
+    className="
+      w-3 fill-current
+      text-foreground
+      delay-50 duration-200
+      group-hover/button:-translate-y-12
+    "
+    viewBox="0 0 384 512"
+  >
+    <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z" />
+  </svg>
+</motion.button>
+
         </motion.div>
       </div>
     </footer>
