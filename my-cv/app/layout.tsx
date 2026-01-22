@@ -2,6 +2,8 @@ import { Providers } from "./providers";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CustomCursor from "@/components/CustomCursor";
+
 export default function RootLayout({
   children,
 }: {
@@ -12,6 +14,7 @@ export default function RootLayout({
       <body>
         <Providers>
           {" "}
+          <CustomCursor />
           <Navbar />
           {children}
           <Footer />

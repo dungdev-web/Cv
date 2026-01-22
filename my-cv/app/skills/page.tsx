@@ -257,7 +257,7 @@ export default function Skills() {
                 <Card className="p-5 h-full border-2 hover:border-primary/30 transition-all group hover:shadow-lg relative overflow-hidden">
                   {/* Background glow */}
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
                   />
 
                   <div className="relative z-10">

@@ -2,6 +2,11 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+@media (pointer: fine) {
+  * {
+    cursor: none;
+  }
+}
 
 @theme inline {
   --color-background: var(--background);
