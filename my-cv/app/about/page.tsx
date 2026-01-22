@@ -4,27 +4,38 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Download, Eye, Sparkles, Code2, Rocket, Target, Heart, Coffee, Zap } from "lucide-react";
+import {
+  Download,
+  Eye,
+  Sparkles,
+  Code2,
+  Rocket,
+  Target,
+  Heart,
+  Coffee,
+  Zap,
+} from "lucide-react";
+import Link from "next/link";
 
 const highlights = [
   {
     icon: Code2,
     title: "Clean Code",
-    description: "Viết code dễ đọc, dễ maintain",
-    color: "text-blue-500"
+    description: "Write code that is easy to read and maintain.",
+    color: "text-blue-500",
   },
   {
     icon: Rocket,
     title: "Fast Learner",
-    description: "Luôn học hỏi công nghệ mới",
-    color: "text-purple-500"
+    description: "Always learning new technologies.",
+    color: "text-purple-500",
   },
   {
     icon: Target,
     title: "Detail-oriented",
-    description: "Chú trọng từng chi tiết UI/UX",
-    color: "text-orange-500"
-  }
+    description: "Attention to every detail in UI/UX",
+    color: "text-orange-500",
+  },
 ];
 
 const stats = [
@@ -35,8 +46,10 @@ const stats = [
 
 export default function About() {
   return (
-    <section id="about" className="relative container mx-auto py-16 px-4 overflow-hidden min-h-screen flex items-center">
-      
+    <section
+      id="about"
+      className="relative container mx-auto py-16 px-4 overflow-hidden min-h-screen flex items-center"
+    >
       {/* Background decorations */}
       <motion.div
         className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10"
@@ -47,7 +60,7 @@ export default function About() {
         transition={{
           duration: 8,
           repeat: Infinity,
-          ease: "easeInOut"
+          ease: "easeInOut",
         }}
       />
       <motion.div
@@ -59,12 +72,11 @@ export default function About() {
         transition={{
           duration: 10,
           repeat: Infinity,
-          ease: "easeInOut"
+          ease: "easeInOut",
         }}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 xl:gap-12 items-center w-full">
-        
         {/* LEFT: Creative visual element */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -74,7 +86,6 @@ export default function About() {
           className="flex justify-center relative"
         >
           <div className="relative w-full max-w-md aspect-square">
-            
             {/* Main decorative card */}
             <motion.div
               className="absolute inset-0 rounded-3xl bg-linear-to-br from-primary/20 via-purple-500/20 to-pink-500/20 backdrop-blur-sm"
@@ -84,7 +95,7 @@ export default function About() {
               transition={{
                 duration: 10,
                 repeat: Infinity,
-                ease: "easeInOut"
+                ease: "easeInOut",
               }}
             />
 
@@ -108,9 +119,11 @@ export default function About() {
                     >
                       <motion.div
                         className={`h-3 rounded-full bg-linear-to-r ${
-                          i % 3 === 0 ? 'from-blue-500 to-cyan-500 w-1/2' :
-                          i % 3 === 1 ? 'from-purple-500 to-pink-500 w-2/3' :
-                          'from-orange-500 to-yellow-500 w-1/3'
+                          i % 3 === 0
+                            ? "from-blue-500 to-cyan-500 w-1/2"
+                            : i % 3 === 1
+                              ? "from-purple-500 to-pink-500 w-2/3"
+                              : "from-orange-500 to-yellow-500 w-1/3"
                         }`}
                         animate={{
                           opacity: [0.5, 1, 0.5],
@@ -119,7 +132,7 @@ export default function About() {
                           duration: 2,
                           delay: i * 0.2,
                           repeat: Infinity,
-                          ease: "easeInOut"
+                          ease: "easeInOut",
                         }}
                       />
                     </motion.div>
@@ -135,7 +148,7 @@ export default function About() {
                   transition={{
                     duration: 1,
                     repeat: Infinity,
-                    ease: "easeInOut"
+                    ease: "easeInOut",
                   }}
                 />
 
@@ -144,7 +157,9 @@ export default function About() {
                   <div className="w-3 h-3 rounded-full bg-red-500" />
                   <div className="w-3 h-3 rounded-full bg-yellow-500" />
                   <div className="w-3 h-3 rounded-full bg-green-500" />
-                  <span className="ml-2 text-xs text-muted-foreground font-mono">portfolio.tsx</span>
+                  <span className="ml-2 text-xs text-muted-foreground font-mono">
+                    portfolio.tsx
+                  </span>
                 </div>
               </motion.div>
             </div>
@@ -231,7 +246,8 @@ export default function About() {
             className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
           >
             Fresher Frontend Developer{" "}
-            <span className="text-primary">passionate about</span> creating amazing experiences 🚀
+            <span className="text-primary">passionate about</span> creating
+            amazing experiences 🚀
           </motion.h2>
 
           {/* Description */}
@@ -243,15 +259,16 @@ export default function About() {
             className="space-y-3"
           >
             <p className="text-muted-foreground leading-relaxed">
-              Mình là <span className="font-semibold text-foreground">Dũng</span>, một Fresher Frontend Developer đang trong quá trình
-              học tập và phát triển kỹ năng xây dựng giao diện web hiện đại với
-              React, Next.js và Tailwind CSS.
+              I'm <span className="font-semibold text-foreground">Dũng</span>, a
+              fresher frontend developer is currently learning and developing
+              skills in building modern web interfaces with React, Next.js, and
+              Tailwind CSS.
             </p>
 
             <p className="text-muted-foreground leading-relaxed text-sm">
-              Mục tiêu của mình là trở thành Frontend Developer chuyên nghiệp, đóng góp
-              giá trị thực sự cho các sản phẩm và tham gia vào các dự án thực tế trong
-              môi trường doanh nghiệp.
+              My goal is to become a professional Frontend Developer,
+              contributing real value to products and participating in
+              real-world projects in a business environment.
             </p>
           </motion.div>
 
@@ -275,7 +292,9 @@ export default function About() {
                 <Card className="p-3 text-center hover:shadow-lg transition-all border-2 hover:border-primary/50">
                   <stat.icon className="w-5 h-5 text-primary mx-auto mb-1" />
                   <div className="text-xl font-bold">{stat.value}</div>
-                  <div className="text-xs text-muted-foreground">{stat.label}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {stat.label}
+                  </div>
                 </Card>
               </motion.div>
             ))}
@@ -299,12 +318,16 @@ export default function About() {
                 whileHover={{ x: 8 }}
                 className="flex items-start gap-3 p-3 rounded-xl hover:bg-secondary/50 transition-all cursor-pointer group"
               >
-                <div className={`p-2 rounded-lg bg-secondary group-hover:scale-110 transition-transform`}>
+                <div
+                  className={`p-2 rounded-lg bg-secondary group-hover:scale-110 transition-transform`}
+                >
                   <item.icon className={`w-5 h-5 ${item.color}`} />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-sm mb-1">{item.title}</h3>
-                  <p className="text-xs text-muted-foreground">{item.description}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {item.description}
+                  </p>
                 </div>
               </motion.div>
             ))}
@@ -319,7 +342,9 @@ export default function About() {
             className="flex flex-wrap gap-3 pt-2"
           >
             <Button className="group">
-              <Download className="mr-2 w-4 h-4 group-hover:animate-bounce" />
+              <Link href="/pdf/mycv(vn).pdf" target="_blank">
+                <Download className="mr-2 w-4 h-4 group-hover:animate-bounce" />
+              </Link>
               Download CV
             </Button>
             <Button variant="outline" className="group">

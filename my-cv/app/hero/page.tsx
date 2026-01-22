@@ -13,15 +13,16 @@ import {
   Code2,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link"
 
 export default function Hero() {
   const socialLinks = [
-    { icon: Github, href: "#", label: "GitHub" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Mail, href: "#", label: "Email" },
+    { icon: Github, href: "https://github.com/dungdev-web/", label: "GitHub" },
+    { icon: Linkedin, href: "https://www.linkedin.com/in/dev-d%C5%A9ng-15b3143a2/", label: "LinkedIn" },
+    { icon: Mail, href: "mailto:dung.dev.web@gmail.com", label: "Email" },
   ];
 
-  const skills = ["React", "Next.js", "TypeScript", "Tailwind CSS"];
+  const skills = ["React", "Next.js", "TypeScript", "Tailwind CSS","MUI"];
 
   return (
     <section id="hero" className="relative container mx-auto min-h-[90vh] flex items-center px-4 py-20 overflow-hidden">
@@ -78,7 +79,7 @@ export default function Hero() {
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
               Hi, I'm{" "}
               <span className="relative inline-block">
-                <span className="relative z-10 text-primary">Lưu Đức Dũng</span>
+                <span className="relative z-10 text-primary">Dũng</span>
                 <motion.span
                   className="absolute bottom-2 left-0 w-full h-3 bg-primary/20 z-0"
                   initial={{ width: 0 }}
@@ -142,11 +143,15 @@ export default function Hero() {
             className="flex flex-wrap gap-4 pt-4"
           >
             <Button size="lg" className="group">
+              <Link href="#projects">
               View Projects
+              </Link>
               <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Button>
             <Button size="lg" variant="outline" className="group">
+              <a href="mailto:dung.dev.web@gmail.com">
               Contact Me
+              </a>
               <Mail className="ml-2 w-4 h-4" />
             </Button>
           </motion.div>

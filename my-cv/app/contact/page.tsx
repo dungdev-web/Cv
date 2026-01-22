@@ -6,13 +6,60 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Mail, Phone, MapPin, Send, MessageCircle, Clock, Globe } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  MessageCircle,
+  Clock,
+  Globe,
+} from "lucide-react";
 import { Github, Linkedin, Twitter, ExternalLink, Zap } from "lucide-react";
 
+import { useState } from "react";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 export default function Contact() {
-     const socialLinks = [
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      subject: formData.get("subject"),
+      message: formData.get("message"),
+      createdAt: serverTimestamp(),
+    };
+
+    try {
+      setLoading(true);
+
+      await addDoc(collection(db, "contacts"), data);
+
+      alert("✅ Message sent successfully!");
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      alert("❌ Failed to send message!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const socialLinks = [
     { icon: Github, label: "GitHub", url: "#", color: "hover:text-blue-600" },
-    { icon: Linkedin, label: "LinkedIn", url: "#", color: "hover:text-blue-500" },
+    {
+      icon: Linkedin,
+      label: "LinkedIn",
+      url: "#",
+      color: "hover:text-blue-500",
+    },
     { icon: Twitter, label: "Twitter", url: "#", color: "hover:text-sky-500" },
   ];
 
@@ -55,7 +102,8 @@ export default function Contact() {
           Get In <span className="text-primary">Touch</span>
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
-          Feel free to contact me for work, collaboration, or just a friendly chat 👋
+          Feel free to contact me for work, collaboration, or just a friendly
+          chat 👋
         </p>
       </motion.div>
 
@@ -68,25 +116,28 @@ export default function Contact() {
           transition={{ duration: 0.6 }}
           className="space-y-4"
         >
-          <Card className="p-6 flex items-center gap-4 hover:shadow-lg transition-shadow">
-            <div className="p-3 rounded-xl bg-primary/10">
-              <Mail className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Email</p>
-              <p className="font-semibold">dung.dev@gmail.com</p>
-            </div>
-          </Card>
-
-          <Card className="p-6 flex items-center gap-4 hover:shadow-lg transition-shadow">
-            <div className="p-3 rounded-xl bg-primary/10">
-              <Phone className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Phone</p>
-              <p className="font-semibold">+84 xxx xxx xxx</p>
-            </div>
-          </Card>
+          <a href="mailto:0775895973" className="block">
+            <Card className="p-6 flex items-center gap-4 hover:shadow-lg transition-shadow">
+              <div className="p-3 rounded-xl bg-primary/10">
+                <Mail className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Email</p>
+                <p className="font-semibold">dung.dev@gmail.com</p>
+              </div>
+            </Card>
+          </a>
+          <a href="tel:0775895973" className="block">
+            <Card className="p-6 flex items-center gap-4 hover:shadow-lg transition-shadow cursor-pointer">
+              <div className="p-3 rounded-xl bg-primary/10">
+                <Phone className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Phone</p>
+                <p className="font-semibold">+84 xxx xxx xxx</p>
+              </div>
+            </Card>
+          </a>
 
           <Card className="p-6 flex items-center gap-4 hover:shadow-lg transition-shadow">
             <div className="p-3 rounded-xl bg-primary/10">
@@ -97,8 +148,6 @@ export default function Contact() {
               <p className="font-semibold">Viet Nam 🇻🇳</p>
             </div>
           </Card>
-
-         
         </motion.div>
 
         {/* RIGHT: Form + Social */}
@@ -111,76 +160,90 @@ export default function Contact() {
         >
           {/* Form */}
           <Card className="p-6">
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleSubmit}>
               <div className="grid grid-cols-2 gap-4">
-                <Input placeholder="Your name" />
-                <Input placeholder="Your email" type="email" />
+                <Input name="name" placeholder="Your name" required />
+                <Input
+                  name="email"
+                  placeholder="Your email"
+                  type="email"
+                  required
+                />
               </div>
-              <Input placeholder="Subject" />
-              <Textarea placeholder="Your message..." rows={5} />
-              <Button className="w-full gap-2">
+
+              <Input name="subject" placeholder="Subject" required />
+
+              <Textarea
+                name="message"
+                placeholder="Your message..."
+                rows={5}
+                required
+              />
+
+              <Button className="w-full gap-2" disabled={loading}>
                 <Send className="w-4 h-4" />
-                Send Message
+                {loading ? "Sending..." : "Send Message"}
               </Button>
             </form>
           </Card>
-
           {/* Social Links */}
-           <Card className="p-6 relative overflow-hidden">
-      {/* Background gradient effect */}
-      <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-transparent pointer-events-none" />
-      
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="relative z-10"
-      >
-        <div className="flex items-center gap-3 mb-3">
-          <motion.div
-            whileHover={{ rotate: 20 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <Zap className="w-5 h-5 text-primary" />
-          </motion.div>
-          <h3 className="font-semibold text-lg">Connect with me</h3>
-        </div>
+          <Card className="p-6 relative overflow-hidden">
+            {/* Background gradient effect */}
+            <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-transparent pointer-events-none" />
 
-        <motion.div
-          className="space-y-3"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          {socialLinks.map(({ icon: Icon, label, url, color }) => (
-            <motion.div key={label} variants={itemVariants}>
-              <motion.a
-                href={url}
-                whileHover={{ x: 4 }}
-                whileTap={{ scale: 0.98 }}
-                className="group relative block"
-              >
-                <div className="absolute inset-0 bg-primary/10 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity" />
-                <Button
-                  variant="outline"
-                  className="w-full rounded-lg relative flex items-center justify-between gap-2 group-hover:bg-accent transition-colors"
-                  asChild
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="relative z-10"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <motion.div
+                  whileHover={{ rotate: 20 }}
+                  transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <span>
-                    <div className="flex items-center gap-2">
-                      <Icon className={`w-4 h-4 transition-colors ${color}`} />
-                      <span>{label}</span>
-                    </div>
-                    <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </span>
-                </Button>
-              </motion.a>
+                  <Zap className="w-5 h-5 text-primary" />
+                </motion.div>
+                <h3 className="font-semibold text-lg">Connect with me</h3>
+              </div>
+
+              <motion.div
+                className="space-y-3"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                {socialLinks.map(({ icon: Icon, label, url, color }) => (
+                  <motion.div key={label} variants={itemVariants}>
+                    <motion.a
+                      href={url}
+                      whileHover={{ x: 4 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="group relative block"
+                    >
+                      <div className="absolute inset-0 bg-primary/10 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <Button
+                        variant="outline"
+                        className="w-full rounded-lg relative flex items-center justify-between gap-2 group-hover:bg-accent transition-colors"
+                        asChild
+                      >
+                        <span>
+                          <div className="flex items-center gap-2">
+                            <Icon
+                              className={`w-4 h-4 transition-colors ${color}`}
+                            />
+                            <span>{label}</span>
+                          </div>
+                          <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </span>
+                      </Button>
+                    </motion.a>
+                  </motion.div>
+                ))}
+              </motion.div>
             </motion.div>
-          ))}
-        </motion.div>
-      </motion.div>
-    </Card>
+          </Card>
         </motion.div>
       </div>
     </section>

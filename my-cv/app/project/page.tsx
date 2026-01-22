@@ -27,7 +27,7 @@ const projects: Project[] = [
     fullDescription:
       "A comprehensive task management application that helps you organize your daily tasks. Features include creating, editing, deleting tasks with persistent storage using localStorage. Includes filtering by status and due dates.",
     image: "/todo.png",
-    tags: ["React", "Tailwind", "Node.js", "MUI"],
+    tags: ["React", "Tailwind", "Node.js", "MUI", "Framer Motion"],
     features: [
       "Add/Edit/Delete tasks",
       "Filter by status",
@@ -61,7 +61,7 @@ const projects: Project[] = [
     fullDescription:
       "A modern, interactive portfolio website showcasing my work and skills. Built with cutting-edge technologies, featuring smooth animations, dark mode support, and optimized performance.",
     image: "/porfordio.png",
-    tags: ["Next.js", "Tailwind", "Framer Motion"],
+    tags: ["Next.js", "Tailwind", "Framer Motion", "React","Firebase"],
     features: [
       "Smooth animations",
       "Dark mode",
@@ -149,7 +149,7 @@ const projects: Project[] = [
     fullDescription:
       "Ecommerce Shoes is a modern online shopping website specialized in selling shoes. The application allows users to browse products, filter by categories, view product details, add items to cart, and proceed to checkout. The project focuses on building a clean UI, smooth user experience, and reusable components. It also helps practice state management, product listing, and basic e-commerce flows.",
     image: "/nodejs.png",
-    tags: ["React", "Tailwind", "MongoDB","HTML","Node.js"],
+    tags: ["React", "Tailwind", "MongoDB", "HTML", "Node.js"],
     features: [
       "Product listing and product details page",
       "Filter by category, price, and brand",
@@ -159,6 +159,25 @@ const projects: Project[] = [
     ],
     demo: "#",
     github: "https://github.com/dungdev-web/NodeJs",
+  },
+  {
+    id: "ecommerce-hamburger",
+    title: "Ecommerce Hamburger",
+    description:
+      "Modern e-commerce website for ordering hamburgers with menu, cart, and checkout system.",
+    fullDescription:
+      "Ecommerce Hamburger is a modern online food ordering website specialized in selling hamburgers and fast food. The application allows users to browse the menu, view food details, add items to the cart, and place orders. The project focuses on building a clean UI, smooth user experience, and a full-stack flow using Node.js and MongoDB. It also helps practice CRUD operations, API development, and basic e-commerce ordering flows.",
+    image: "/hamburger.png",
+    tags: ["React", "Tailwind", "MySQL", "Node.js"],
+    features: [
+      "Menu listing and food detail page",
+      "Add to cart and remove items from cart",
+      "Place order and order summary",
+      "Backend API with Node.js & MongoDB",
+      "Responsive design for all devices",
+    ],
+    demo: "#",
+    github: "https://github.com/dungdev-web/react_web",
   },
 ];
 
@@ -387,7 +406,7 @@ export default function Projects() {
 
                 {/* Description */}
                 <div className="mb-6">
-                  <h3 className="text-lg font-semibold mb-2">Mô tả</h3>
+                  <h3 className="text-lg font-semibold mb-2">Description</h3>
                   <p className="text-muted-foreground leading-relaxed">
                     {selectedProject.fullDescription}
                   </p>
@@ -397,7 +416,7 @@ export default function Projects() {
                 {selectedProject.features && (
                   <div className="mb-6">
                     <h3 className="text-lg font-semibold mb-3">
-                      Tính năng chính
+                      Main Features
                     </h3>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {selectedProject.features.map((feature, idx) => (
