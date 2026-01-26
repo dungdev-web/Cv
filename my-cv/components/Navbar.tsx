@@ -39,29 +39,31 @@ export default function Navbar() {
 
   // ✅ Scroll Spy
   useEffect(() => {
-    const sections = items
-      .map((i) => document.getElementById(i.id))
-      .filter(Boolean);
+  const handleScrollSpy = () => {
+    const offset = 100; // chiều cao navbar
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+    let current = "hero";
 
-        if (visible.length > 0) {
-          setActive(visible[0].target.id);
-        }
-      },
-      {
-        threshold: [0.2, 0.4, 0.6],
-      },
-    );
+    for (const item of items) {
+      const section = document.getElementById(item.id);
+      if (!section) continue;
 
-    sections.forEach((section) => observer.observe(section!));
+      const top = section.getBoundingClientRect().top;
 
-    return () => observer.disconnect();
-  }, []);
+      if (top - offset <= 0) {
+        current = item.id;
+      }
+    }
+
+    setActive(current);
+  };
+
+  window.addEventListener("scroll", handleScrollSpy);
+  handleScrollSpy();
+
+  return () => window.removeEventListener("scroll", handleScrollSpy);
+}, []);
+
 
   return (
     <motion.header
