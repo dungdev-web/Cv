@@ -61,7 +61,7 @@ const projects: Project[] = [
     fullDescription:
       "A modern, interactive portfolio website showcasing my work and skills. Built with cutting-edge technologies, featuring smooth animations, dark mode support, and optimized performance.",
     image: "/porfordio.png",
-    tags: ["Next.js", "Tailwind", "Framer Motion", "React","Firebase"],
+    tags: ["Next.js", "Tailwind", "Framer Motion", "React", "Firebase"],
     features: [
       "Smooth animations",
       "Dark mode",
@@ -178,6 +178,25 @@ const projects: Project[] = [
     ],
     demo: "#",
     github: "https://github.com/dungdev-web/react_web",
+  },
+  {
+    id: "flash-card",
+    title: "Flash Card English",
+    description:
+      "English learning app using flashcards to practice vocabulary and improve memory.",
+    fullDescription:
+      "Flash Card English is a web application designed to help users learn and memorize English vocabulary through flashcards. The app allows users to create, view, edit, and delete flashcards, practice words with flip animations, and track their learning progress. The project focuses on building an intuitive UI, smooth interactions, and a simple backend using Node.js and MySQL for data storage. This project helps practice CRUD operations, basic database design, and full-stack development skills.",
+    image: "/english.png",
+    tags: ["React", "Tailwind", "Firebase", "Next.js"],
+    features: [
+      "Create flashcards",
+      "Flip card animation to show meaning",
+      "Vocabulary practice and review",
+      "Backend API with Next.js & Firebase",
+      "Responsive design for all devices",
+    ],
+    demo: "https://flash-card-pink-five.vercel.app/login",
+    github: "https://github.com/dungdev-web/flash-card",
   },
 ];
 
