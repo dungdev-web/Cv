@@ -120,7 +120,7 @@ const projects: Project[] = [
       "Local storage persistence",
       "Responsive design",
     ],
-    demo: "https://weather-ten-livid.vercel.app/",
+    demo: "https://budget-ivory-seven.vercel.app/",
     github: "https://github.com/dungdev-web/budget",
   },
   {
