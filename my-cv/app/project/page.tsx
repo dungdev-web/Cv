@@ -198,6 +198,51 @@ const projects: Project[] = [
     demo: "https://flash-card-pink-five.vercel.app/login",
     github: "https://github.com/dungdev-web/flash-card",
   },
+  {
+    id: "chat-realtime",
+    title: "Chat Realtime",
+    description:
+      "Realtime chat application with authentication, online status, and instant messaging.",
+    fullDescription:
+      "Chat Realtime is a real-time messaging web application that allows users to communicate instantly with each other. The app supports user authentication, sending and receiving messages in real time, and displaying online/offline status. Built with Next.js, React, Tailwind CSS, and Firebase, the project focuses on real-time data handling, modern UI design, and scalable frontend architecture. This project helps practice working with real-time databases, authentication flows, and responsive UI development.",
+    image: "/chat.png",
+    tags: ["React", "Tailwind", "Firebase", "Socket.io"],
+    features: [
+      "User authentication (login / register)",
+      "Realtime messaging with Firebase",
+      "Online and offline user status",
+      "Modern chat UI with responsive design",
+      "Deployed on Vercel",
+    ],
+    demo: "https://chat-social-self.vercel.app/",
+    github: "https://github.com/dungdev-web/chat_social",
+  },
+  {
+    id: "short-link",
+    title: "Short Link Generator",
+    description:
+      "URL shortener application with link management, analytics, and rate limiting.",
+    fullDescription:
+      "Short Link Generator is a web application that allows users to convert long URLs into short, shareable links. The system supports creating, managing, and redirecting short links with high performance and security. It also includes rate limiting to prevent abuse and ensures stable operation. Built with Next.js, React, Tailwind CSS, Node.js, and PostgreSQL, this project focuses on backend API design, database modeling, and building a scalable full-stack application.",
+    image: "/short-link.png",
+    tags: [
+      "React",
+      "Next.js",
+      "Tailwind",
+      "Node.js",
+      "PostgreSQL",
+      "Rate Limiting",
+    ],
+    features: [
+      "Generate short links from long URLs",
+      "Fast redirect with backend API",
+      "Rate limiting to prevent spam and abuse",
+      "PostgreSQL database for link storage",
+      "Responsive UI and modern design",
+    ],
+    demo: "#",
+    github: "https://github.com/dungdev-web/short_link",
+  },
 ];
 
 const allTags = [
