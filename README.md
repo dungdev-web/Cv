@@ -94,16 +94,6 @@ portfolio/
 ### Dark Mode
 Dark mode is built-in and automatically detects system preferences. Users can manually toggle it using the theme switcher in the navigation.
 
-### Color Scheme
-Customize colors in `tailwind.config.js`:
-```js
-theme: {
-  colors: {
-    // Your custom colors here
-  }
-}
-```
-
 ### Animations
 Modify Framer Motion animations in individual components. Common animation variants are in `lib/animations.js`.
 
