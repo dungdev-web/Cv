@@ -1,16 +1,22 @@
-import Hero from "./hero/page"
-import About from "./about/page"
-import Skills from "./skills/page"
-import Projects from "./project/page"
-import Contact from "./contact/page"
+import React, { Suspense, lazy } from 'react';
+import Hero from "./hero/page"; 
+import Loader from "@/components/Loader";
+
+const About = lazy(() => import("./about/page"));
+const Skills = lazy(() => import("./skills/page"));
+const Projects = lazy(() => import("./project/page"));
+const Contact = lazy(() => import("./contact/page"));
+
 export default function Home() {
   return (
     <>
       <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Contact />
+      <Suspense fallback={<Loader/>}>
+        <About />
+        <Skills />
+        <Projects />
+        <Contact />
+      </Suspense>
     </>
-  )
+  );
 }

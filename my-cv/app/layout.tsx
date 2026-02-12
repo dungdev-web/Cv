@@ -1,35 +1,33 @@
 "use client";
+import dynamic from 'next/dynamic';
 import { Providers } from "./providers";
 import "./globals.css";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import CustomCursor from "@/components/CustomCursor";
-import { Toaster } from "sonner"
 import Loader from "@/components/Loader";
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-   const [loading, setLoading] = useState(true)
+
+const CustomCursor = dynamic(() => import("@/components/CustomCursor"), { ssr: false });
+const Toaster = dynamic(() => import("sonner").then((mod) => mod.Toaster), { ssr: false });
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false)
-    }, 5000) // ⏱ 5 giây
+   const timer = setTimeout(() => {
+    setLoading(false);      
+    },1000)
+  }, []);
 
-    return () => clearTimeout(timer)
-  }, [])
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-         <Providers>
+        <Providers>
           {loading ? (
             <Loader />
           ) : (
             <>
-              <CustomCursor />
+              <CustomCursor /> 
               <Navbar />
               {children}
               <Toaster richColors position="bottom-right" />
