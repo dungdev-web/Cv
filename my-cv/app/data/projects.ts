@@ -229,7 +229,7 @@ export const projects: Project[] = [
   description:
     "Real-time employee management system with live updates, authentication, and role-based access.",
   fullDescription:
-    "Real-Time Employee Management is a web application designed to manage employee information with real-time data updates. The system allows admins to create, update, and delete employee records while changes are instantly synchronized across clients using Firebase. Built with React, SCSS, Node.js, and Firebase, this project focuses on real-time data handling, authentication, role-based access control, and building a responsive management dashboard.",
+    "Real-Time Employee Management is a web application designed to manage employee information with real-time data updates. The system allows admins to create, update, and delete employee records while changes are instantly synchronized across clients using Firebase. Built with React, SCSS, Node.js, Firebase and Socket.io this project focuses on real-time data handling, authentication, role-based access control, and building a responsive management dashboard.",
   image: "/realtim-manage.png",
   tags: ["React", "SCSS", "Node.js", "Firebase","Socket.io"],
   features: [
