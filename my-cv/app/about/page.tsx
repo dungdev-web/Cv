@@ -344,8 +344,9 @@ export default function About() {
             <Button className="group">
               <Link href="/pdf/mycv(vn).pdf" target="_blank">
                 <Download className="mr-2 w-4 h-4 group-hover:animate-bounce" />
-              </Link>
               Download CV
+              </Link>
+
             </Button>
             <Button variant="outline" className="group">
               <Eye className="mr-2 w-4 h-4 group-hover:scale-110 transition-transform" />
