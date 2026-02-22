@@ -342,7 +342,7 @@ export default function About() {
             className="flex flex-wrap gap-3 pt-2"
           >
             <Button className="group">
-              <Link href="/pdf/mycv(vn).pdf" target="_blank">
+              <Link href="/pdf/mycv(vn).pdf" target="_blank" className="flex items-center" >
                 <Download className="mr-2 w-4 h-4 group-hover:animate-bounce" />
               Download CV
               </Link>
