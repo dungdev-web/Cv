@@ -241,5 +241,24 @@ export const projects: Project[] = [
   ],
   demo: "#",
   github: "https://github.com/dungdev-web/Real-time-employee",
-}
+},
+ {
+  id: "company-comparison",
+  title: "Company Comparison App",
+  description: "A tool that helps job seekers compare two companies side-by-side to make smarter career decisions.",
+  fullDescription:
+    "Company Comparison App is a web application designed for job seekers who are weighing multiple job offers or researching potential employers. Users can input and compare two companies across key dimensions such as salary, benefits, work culture, career growth opportunities, work-life balance, and tech stack. The app generates a visual comparison and a weighted score to help candidates make confident, data-driven career decisions. Built with React, NestJS, and Tailwind CSS, with Excel export support for saving and sharing comparisons.",
+  image: "/company.png",
+  tags: ["React", "NestJS", "Tailwind", "Excel"],
+  features: [
+    "Side-by-side comparison of 2 companies",
+    "Customizable criteria (salary, benefits, culture, growth...)",
+    "Weighted scoring system for personalized decisions",
+    "Visual comparison charts",
+    "Export comparison report to Excel",
+    "Responsive design for all devices",
+  ],
+  demo: "#",
+  github: "#",
+},
 ];

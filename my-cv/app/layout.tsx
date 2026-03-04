@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Loader from "@/components/Loader";
+import { I18nProvider } from "@/lib/i18n";
 
 const CustomCursor = dynamic(() => import("@/components/CustomCursor"), { ssr: false });
 const Toaster = dynamic(() => import("sonner").then((mod) => mod.Toaster), { ssr: false });
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body>
         <Providers>
+          <I18nProvider>
           {loading ? (
             <Loader />
           ) : (
@@ -34,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Footer />
             </>
           )}
+          </I18nProvider>
         </Providers>
       </body>
     </html>

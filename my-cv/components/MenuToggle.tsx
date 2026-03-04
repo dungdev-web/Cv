@@ -25,8 +25,8 @@ export default function MenuToggle({
       className="relative z-50 flex h-10 w-10 items-center justify-center rounded-full "
     >
       <motion.svg
-        width="23"
-        height="23"
+        width="20"
+        height="20"
         viewBox="0 0 23 23"
         animate={isOpen ? "open" : "closed"}
       >

@@ -4,8 +4,10 @@ import * as motion from "motion/react-client";
 import { useState } from "react";
 import MenuToggle from "./MenuToggle";
 import { animate } from "framer-motion";
+import { useI18n } from "@/lib/i18n";
 
 const menuItems = ["about", "skills", "projects", "contact"];
+
 
 const sidebarVariants = {
   open: {
@@ -19,6 +21,8 @@ const sidebarVariants = {
 };
 
 export default function MobileMenu() {
+const { lang, setLang, t } = useI18n();
+
   const [isOpen, setIsOpen] = useState(false);
   const handleScroll = (id: string) => {
     const el = document.getElementById(id);
@@ -49,7 +53,7 @@ export default function MobileMenu() {
         initial={false}
         animate={isOpen ? "open" : "closed"}
         variants={sidebarVariants}
-        className="fixed -top-0.75 right-1.5 z-50 h-full w-75 bg-sky-100 dark:bg-sky-900/40 backdrop-blur shadow-2xl"
+        className="fixed -top-1 right-1.5 z-50 h-full w-75 bg-sky-100 dark:bg-sky-900/40 backdrop-blur shadow-2xl"
       >
         {/* Close button */}
 
@@ -80,6 +84,18 @@ export default function MobileMenu() {
               </a>
             </motion.li>
           ))}
+          <button
+            onClick={() => setLang(lang === "en" ? "vi" : "en")}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-sm font-semibold transition-all hover:bg-secondary"
+            title="Switch language"
+          >
+            <span className="text-base leading-none">
+              {lang === "en" ? "🇻🇳" : "🇬🇧"}
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {lang === "en" ? "VI" : "EN"}
+            </span>
+          </button>
         </motion.ul>
       </motion.aside>
     </>
