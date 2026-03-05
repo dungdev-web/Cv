@@ -137,7 +137,7 @@ export default function Hero() {
 
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.2 }} className="absolute -left-8 top-1/4 hidden lg:block">
             <Card className="p-4 shadow-xl backdrop-blur-sm bg-background/95">
-              <div className="text-2xl font-bold text-primary">3+</div>
+              <div className="text-2xl font-bold text-primary">7+</div>
               <div className="text-sm text-muted-foreground">{t.hero.monthsExp}</div>
             </Card>
           </motion.div>
