@@ -10,10 +10,10 @@ import { useI18n } from "@/lib/i18n";
 
 export default function Navbar() {
   const { lang, setLang, t } = useI18n();
-  const [active, setActive] = useState("hero");
+  const [active, setActive] = useState("home");
 
   const items = [
-    { id: "hero",     label: t.nav.home },
+    { id: "home",     label: t.nav.home },
     { id: "about",    label: t.nav.about },
     { id: "skills",   label: t.nav.skills },
     { id: "projects", label: t.nav.projects },
@@ -39,7 +39,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScrollSpy = () => {
-      let current = "hero";
+      let current = "home";
       for (const item of items) {
         const section = document.getElementById(item.id);
         if (!section) continue;
@@ -64,7 +64,7 @@ export default function Navbar() {
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
         {/* Logo */}
-        <button onClick={() => handleScroll("hero")} className="text-xl font-bold">
+        <button onClick={() => handleScroll("home")} className="text-xl font-bold">
           Dũng.dev
         </button>
 

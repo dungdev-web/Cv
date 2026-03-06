@@ -69,6 +69,7 @@ export const translations = {
       radarTitle: "Skill Radar",
       expertiseTitle: "Expertise & Soft Skills",
       learning: "Learning Journey",
+      moretech:"more technologies",
       expertise: {
         learning: {
           title: "Continuous Learning",
@@ -148,7 +149,7 @@ export const translations = {
       Connect: "Connect",
       navigate: "Navigate",
       nav: {
-        home: "Home",
+        hero: "Hero",
         about: "About",
         skills: "Skills",
         projects: "Projects",
@@ -224,6 +225,7 @@ export const translations = {
       radarTitle: "Biểu đồ kỹ năng",
       expertiseTitle: "Chuyên môn & Kỹ năng mềm",
       learning: "Hành trình học tập",
+      moretech:"thêm công nghệ",
       expertise: {
         learning: {
           title: "Học liên tục",
@@ -296,7 +298,7 @@ export const translations = {
       Connect: "Kết nối",
       navigate: "Điều hướng",
       nav: {
-        home: "Trang chủ",
+        hero: "Trang chủ",
         about: "Giới thiệu",
         skills: "Kỹ năng",
         projects: "Dự án",

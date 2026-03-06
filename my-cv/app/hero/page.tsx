@@ -23,7 +23,7 @@ export default function Hero() {
   const skills = ["React", "Next.js", "TypeScript", "Tailwind CSS", "MUI"];
 
   return (
-    <section id="hero" className="relative container mx-auto min-h-[90vh] flex items-center px-4 py-20 overflow-hidden">
+    <section id="home" className="relative container mx-auto min-h-[90vh] flex items-center px-4 py-20 overflow-hidden">
       <div className="absolute inset-0 -z-10">
         <motion.div
           className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl"

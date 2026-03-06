@@ -634,7 +634,7 @@ export default function Skills() {
               onClick={() => setShowAllSkills(true)}
               className="mt-4 w-full py-2.5 rounded-xl border border-dashed border-border text-sm text-muted-foreground hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2"
             >
-              <span>+{skills.length - 8} more technologies</span>
+              <span>+{skills.length - 8} {t.skills.moretech}</span>
               <span className="text-lg">↓</span>
             </motion.button>
           )}
