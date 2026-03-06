@@ -8,7 +8,6 @@ import { useI18n } from "@/lib/i18n";
 
 const menuItems = ["about", "skills", "projects", "contact"];
 
-
 const sidebarVariants = {
   open: {
     clipPath: "circle(1500px at 90% 40px)",
@@ -21,7 +20,7 @@ const sidebarVariants = {
 };
 
 export default function MobileMenu() {
-const { lang, setLang, t } = useI18n();
+  const { lang, setLang, t } = useI18n();
 
   const [isOpen, setIsOpen] = useState(false);
   const handleScroll = (id: string) => {
@@ -80,7 +79,7 @@ const { lang, setLang, t } = useI18n();
                 onClick={() => setIsOpen(false)}
                 className="capitalize"
               >
-                {item}
+                {t.nav[item as keyof typeof t.nav]}
               </a>
             </motion.li>
           ))}
