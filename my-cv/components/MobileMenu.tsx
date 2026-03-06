@@ -6,7 +6,7 @@ import MenuToggle from "./MenuToggle";
 import { animate } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 
-const menuItems = ["about", "skills", "projects", "contact"];
+const menuItems = ["home","about", "skills", "projects", "contact"];
 
 const sidebarVariants = {
   open: {
