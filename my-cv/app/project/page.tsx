@@ -106,17 +106,31 @@ function TagList({ tags }: { tags: string[] }) {
   return (
     <div className="flex flex-wrap gap-2 mb-4">
       {visible.map((tag) => (
-        <Badge key={tag} variant="secondary" className="rounded-full">{tag}</Badge>
+        <Badge key={tag} variant="secondary" className="rounded-full">
+          {tag}
+        </Badge>
       ))}
       {!expanded && hidden > 0 && (
-        <Badge variant="outline" className="rounded-full cursor-pointer hover:bg-secondary transition-colors"
-          onClick={(e) => { e.stopPropagation(); setExpanded(true); }}>
+        <Badge
+          variant="outline"
+          className="rounded-full cursor-pointer hover:bg-secondary transition-colors"
+          onClick={(e) => {
+            e.stopPropagation();
+            setExpanded(true);
+          }}
+        >
           +{hidden} more
         </Badge>
       )}
       {expanded && hidden > 0 && (
-        <Badge variant="outline" className="rounded-full cursor-pointer hover:bg-secondary transition-colors"
-          onClick={(e) => { e.stopPropagation(); setExpanded(false); }}>
+        <Badge
+          variant="outline"
+          className="rounded-full cursor-pointer hover:bg-secondary transition-colors"
+          onClick={(e) => {
+            e.stopPropagation();
+            setExpanded(false);
+          }}
+        >
           ‹
         </Badge>
       )}
@@ -128,7 +142,7 @@ export default function Projects() {
   const [activeTag, setActiveTag] = useState("All");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [comingSoon, setComingSoon] = useState<string | null>(null);
-
+  const [visibleCount, setVisibleCount] = useState(3);
   // ── Helper lấy text theo ngôn ngữ ─────────────────────────────────────────
   const loc = (p: Project) => ({
     title: lang === "vi" && p.titleVi ? p.titleVi : p.title,
@@ -170,7 +184,10 @@ export default function Projects() {
             key={tag}
             variant={activeTag === tag ? "default" : "outline"}
             size="sm"
-            onClick={() => setActiveTag(tag)}
+            onClick={() => {
+              setActiveTag(tag);
+              setVisibleCount(3);
+            }}
             className="rounded-full"
           >
             {tag}
@@ -180,7 +197,7 @@ export default function Projects() {
 
       <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <AnimatePresence>
-          {filtered.map((project) => (
+          {filtered.slice(0, visibleCount).map((project) => (
             <motion.div
               key={project.id}
               layout
@@ -299,7 +316,22 @@ export default function Projects() {
           ))}
         </AnimatePresence>
       </motion.div>
-
+      {filtered.length > visibleCount && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex justify-center mt-10"
+        >
+          <Button
+            variant="outline"
+            size="lg"
+            className="rounded-full px-8 gap-2"
+            onClick={() => setVisibleCount((v) => v + 3)}
+          >
+            {t.projects.showProjects} ({filtered.length - visibleCount})
+          </Button>
+        </motion.div>
+      )}
       {/* Modal */}
       <AnimatePresence>
         {selectedProject && (
@@ -429,8 +461,7 @@ export default function Projects() {
                         onClick={() => {
                           if (selectedProject.github === "#") {
                             setComingSoon(t.projects.codeSoon);
-                          }
-                          else {
+                          } else {
                             window.open(selectedProject.github!, "_blank");
                           }
                         }}
@@ -440,23 +471,6 @@ export default function Projects() {
                       </Button>
                     )
                   )}
-                  {/* {selectedProject.github && (
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="gap-2 flex-1"
-                      asChild
-                    >
-                      <a
-                        href={selectedProject.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Github className="w-5 h-5" />
-                        {t.projects.viewCode}
-                      </a>
-                    </Button>
-                  )} */}
                 </div>
               </div>
             </motion.div>

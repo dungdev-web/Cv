@@ -4,8 +4,10 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Github, Facebook, Mail, ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n";
 
 export default function Footer() {
+  const { t } = useI18n();
   const year = new Date().getFullYear();
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -39,7 +41,7 @@ export default function Footer() {
     { Icon: Mail, label: "Email" },
   ];
 
-  const navItems = ["hero", "about", "skills", "projects", "contact"];
+  const navItems = ["home", "about", "skills", "projects", "contact"];
 
   return (
     <footer className="relative border-t bg-background/80 backdrop-blur">
@@ -62,27 +64,26 @@ export default function Footer() {
               Dũng.dev
             </motion.h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Frontend Developer crafting modern, fast & beautiful web
-              experiences.
+              {t.footer.description}
             </p>
           </motion.div>
 
           {/* Navigation */}
           <motion.div variants={itemVariants} className="md:col-span-1">
             <h4 className="text-sm font-semibold uppercase tracking-wider mb-4 text-foreground/80">
-              Navigate
+              {t.footer.navigate}
             </h4>
             <nav className="flex flex-col gap-3">
-              {navItems.map((id) => (
+              {navItems.map((item) => (
                 <motion.button
-                  key={id}
-                  onClick={() => scrollToSection(id)}
+                  key={item}
+                  onClick={() => scrollToSection(item)}
                   className="text-sm text-muted-foreground inline-block text-left"
                   whileHover={{ x: 4 }}
                   whileTap={{ x: 2 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {id.charAt(0).toUpperCase() + id.slice(1)}
+                {t.nav[item as keyof typeof t.nav]}
                 </motion.button>
               ))}
             </nav>
@@ -91,7 +92,7 @@ export default function Footer() {
           {/* Social */}
           <motion.div variants={itemVariants} className="md:col-span-1">
             <h4 className="text-sm font-semibold uppercase tracking-wider mb-4 text-foreground/80">
-              Connect
+              {t.footer.Connect}
             </h4>
             <div className="flex gap-2">
               {socialIcons.map(({ Icon, label }) => (
@@ -116,10 +117,10 @@ export default function Footer() {
           {/* CTA */}
           <motion.div variants={itemVariants} className="md:col-span-1">
             <h4 className="text-sm font-semibold uppercase tracking-wider mb-4 text-foreground/80">
-              Work Together
+              {t.footer.work}
             </h4>
             <p className="text-sm text-muted-foreground mb-4">
-              Have a project in mind? Let's collaborate.
+              {t.footer.worktogether}
             </p>
             <Button
               size="sm"
@@ -132,7 +133,7 @@ export default function Footer() {
                 whileTap={{ scale: 0.98 }}
                 transition={{ duration: 0.2 }}
               >
-                Get in Touch
+                {t.footer.getinTouch}
               </motion.button>
             </Button>
           </motion.div>

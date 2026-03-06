@@ -58,7 +58,7 @@ export default function MobileMenu() {
 
         {/* Menu */}
         <motion.ul
-          className="absolute top-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-8 text-2xl bg-sky-100 font-bold dark:bg-sky-900/40 backdrop-blur shadow-2xl w-full h-[91vh]"
+          className="absolute top-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-8 text-base bg-sky-100 font-bold dark:bg-sky-900/40 backdrop-blur shadow-2xl w-full h-[91vh]"
           variants={{
             open: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
             closed: {
