@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useState } from "react";
 import CertificateModal from "@/components/CertificateModal";
 import { useI18n } from "@/lib/i18n";
-
+import { projects } from "../data/projects";
 export default function About() {
   const { t, lang } = useI18n();
   const [showCertificates, setShowCertificates] = useState(false);
@@ -22,9 +22,9 @@ export default function About() {
   ];
 
   const stats = [
-    { value: `${12}+`,  labelKey: "projects" as const, icon: Rocket },
-    { value: "100%",    labelKey: "passion"  as const, icon: Heart },
-    { value: "24/7",    labelKey: "learning" as const, icon: Coffee },
+    { value: `${projects.length}+`,  labelKey: "projects" as const, icon: Rocket },
+    { value: "2",    labelKey: "passion"  as const, icon: Heart },
+    { value: "1+",    labelKey: "learning" as const, icon: Coffee },
   ];
 
   return (

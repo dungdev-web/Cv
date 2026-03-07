@@ -38,8 +38,8 @@ export const translations = {
       viewCert: "View certificate",
       stats: {
         projects: "Projects",
-        passion: "Passion",
-        learning: "Learning",
+        passion: "Tech Stacks — Frontend & Backend",
+        learning: "Year — Self-taught Journey",
       },
       highlights: {
         cleanCode: {
@@ -194,8 +194,8 @@ export const translations = {
       viewCert: "Xem chứng chỉ",
       stats: {
         projects: "Dự án",
-        passion: "Đam mê",
-        learning: "Học tập",
+        passion: "Công nghệ — Frontend & Backend",
+        learning: "Năm — Hành trình tự học",
       },
       highlights: {
         cleanCode: {
