@@ -12,7 +12,7 @@ export const projects: Project[] = [
     fullDescriptionVi:
       "Ứng dụng quản lý công việc toàn diện giúp bạn tổ chức các nhiệm vụ hàng ngày. Tính năng bao gồm tạo, chỉnh sửa, xóa công việc với lưu trữ bền vững bằng localStorage. Hỗ trợ lọc theo trạng thái và ngày đến hạn.",
     image: "/todo.png",
-    tags: ["React", "Tailwind", "Node.js", "MUI", "Framer Motion"],
+    tags: ["React", "Tailwind", "Node.js", "MUI", "Framer Motion","MySQL"],
     features: [
       "Add/Edit/Delete tasks",
       "Filter by status",
@@ -27,6 +27,7 @@ export const projects: Project[] = [
     ],
     demo: "https://quan-ly-thoi-gian.vercel.app/",
     github: "https://github.com/dungdev-web/quan_ly_thoi_gian",
+    type: "Fullstack"
   },
   {
     id: "auth-ui",
@@ -55,6 +56,7 @@ export const projects: Project[] = [
     ],
     demo: "#",
     github: "https://github.com/dungdev-web/Login_MUI",
+    type: "Frontend"
   },
   {
     id: "portfolio",
@@ -83,6 +85,7 @@ export const projects: Project[] = [
     ],
     demo: "https://cv-five-beige.vercel.app/",
     github: "https://github.com/dungdev-web/Cv",
+    type: "Fullstack"
   },
   {
     id: "quiz",
@@ -111,6 +114,7 @@ export const projects: Project[] = [
     ],
     demo: "https://my-quizz-inky.vercel.app/",
     github: "https://github.com/dungdev-web/my_quizz",
+    type: "Frontend"
   },
   {
     id: "weather",
@@ -139,7 +143,8 @@ export const projects: Project[] = [
       "Thiết kế responsive",
     ],
     demo: "https://weather-ten-livid.vercel.app/",
-    github: "#",
+    github: "https://github.com/dungdev-web/weather",
+    type: "Frontend"
   },
   {
     id: "budget",
@@ -169,6 +174,7 @@ export const projects: Project[] = [
     ],
     demo: "https://budget-ivory-seven.vercel.app/",
     github: "https://github.com/dungdev-web/budget",
+    type: "Fullstack"
   },
   {
     id: "personal-blog",
@@ -198,6 +204,7 @@ export const projects: Project[] = [
     ],
     demo: "https://personal-blog-silk-ten.vercel.app/",
     github: "https://github.com/dungdev-web/personal_blog",
+    type: "Frontend"
   },
   {
     id: "ecommerce-shoes",
@@ -227,6 +234,7 @@ export const projects: Project[] = [
     ],
     demo: "#",
     github: "https://github.com/dungdev-web/NodeJs",
+    type: "Fullstack"
   },
   {
     id: "ecommerce-hamburger",
@@ -256,6 +264,7 @@ export const projects: Project[] = [
     ],
     demo: "#",
     github: "https://github.com/dungdev-web/react_web",
+    type: "Fullstack"
   },
   {
     id: "flash-card",
@@ -285,6 +294,7 @@ export const projects: Project[] = [
     ],
     demo: "https://flash-card-pink-five.vercel.app/login",
     github: "https://github.com/dungdev-web/flash-card",
+    type: "Fullstack"
   },
   {
     id: "chat-realtime",
@@ -314,6 +324,7 @@ export const projects: Project[] = [
     ],
     demo: "https://chat-social-self.vercel.app/",
     github: "https://github.com/dungdev-web/chat_social",
+    type: "Fullstack"
   },
   {
     id: "short-link",
@@ -350,6 +361,7 @@ export const projects: Project[] = [
     ],
     demo: "#",
     github: "https://github.com/dungdev-web/short_link",
+    type: "Fullstack"
   },
   {
     id: "real-time-employee",
@@ -386,6 +398,7 @@ export const projects: Project[] = [
     ],
     demo: "#",
     github: "https://github.com/dungdev-web/Real-time-employee",
+    type: "Fullstack"
   },
   {
     id: "company-comparison",
@@ -415,6 +428,7 @@ export const projects: Project[] = [
     ],
     demo: "#",
     github: "https://github.com/dungdev-web/excel_app",
+    type: "Fullstack"
   },
   {
     id: "tera-shoes",
@@ -447,5 +461,6 @@ export const projects: Project[] = [
     demo: "#",
     githubFe: "https://github.com/dungdev-web/FE-datn-",
     githubBe: "https://github.com/dungdev-web/BE-datn-",
+    type: "Fullstack"
   },
 ];

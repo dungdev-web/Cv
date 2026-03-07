@@ -14,4 +14,6 @@ export interface Project {
   github?: string;
   githubFe?: string;
   githubBe?: string;
+  type?: "Fullstack" | "Frontend" | "Backend"
+
 }

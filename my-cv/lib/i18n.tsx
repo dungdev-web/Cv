@@ -14,9 +14,9 @@ export const translations = {
       contact: "Contact",
     },
     hero: {
-      badge: "Available for freelance",
+      badge: "Open to Work — Frontend & Backend",
       greeting: "Hi, I'm",
-      role: "Frontend Developer",
+      role: "Frontend Developer | Backend Enthusiast",
       description:
         "I craft beautiful, performant web experiences with modern technologies. Passionate about clean code and pixel-perfect designs.",
       viewProjects: "View Projects",
@@ -31,15 +31,15 @@ export const translations = {
       heading2: "passionate about",
       heading3: "creating amazing experiences 🚀",
       desc1:
-        "a fresher frontend developer is currently learning and developing skills in building modern web interfaces with React, Next.js, and Tailwind CSS.",
+        "a fresher developer passionate about building modern web experiences. I work with React, Next.js on the frontend and Node.js, Express on the backend — with hands-on experience connecting both sides via RESTful APIs.",
       desc2:
-        "My goal is to become a professional Frontend Developer, contributing real value to products and participating in real-world projects in a business environment.",
+        "My goal is to become a professional Full-Stack Developer, contributing real value to products by building seamless experiences from UI to API — and growing through real-world projects in a collaborative business environment.",
       downloadCV: "Download CV",
       viewCert: "View certificate",
       stats: {
-        projects: "Projects",
-        passion: "Tech Stacks — Frontend & Backend",
-        learning: "Year — Self-taught Journey",
+        projects: "Projects Built",
+        passion: "Tech Stacks",
+        learning: "Year of Learning",
       },
       highlights: {
         cleanCode: {
@@ -170,9 +170,9 @@ export const translations = {
       contact: "Liên hệ",
     },
     hero: {
-      badge: "Sẵn sàng nhận dự án freelance",
+      badge: "Sẵn sàng làm việc — Frontend & Backend",
       greeting: "Xin chào, tôi là",
-      role: "Lập trình viên Frontend",
+      role: "Lập trình viên Frontend | Đam mê Backend",
       description:
         "Tôi tạo ra những trải nghiệm web đẹp và hiệu quả với công nghệ hiện đại. Đam mê clean code và thiết kế pixel-perfect.",
       viewProjects: "Xem dự án",
@@ -187,15 +187,15 @@ export const translations = {
       heading2: "đam mê",
       heading3: "tạo ra những trải nghiệm tuyệt vời 🚀",
       desc1:
-        "là một fresher frontend developer đang học và phát triển kỹ năng xây dựng giao diện web hiện đại với React, Next.js và Tailwind CSS.",
+        "là một lập trình viên fresher đam mê xây dựng trải nghiệm web hiện đại. Tôi làm việc với React, Next.js ở frontend và Node.js, Express ở backend — với kinh nghiệm thực tế kết nối cả hai bên qua RESTful APIs.",
       desc2:
-        "Mục tiêu của tôi là trở thành Frontend Developer chuyên nghiệp, đóng góp giá trị thực cho sản phẩm và tham gia vào các dự án thực tế trong môi trường doanh nghiệp.",
+        "Mục tiêu của tôi là trở thành một Full-Stack Developer chuyên nghiệp, đóng góp giá trị thực cho sản phẩm bằng cách xây dựng trải nghiệm liền mạch từ UI đến API — và phát triển thông qua các dự án thực tế trong môi trường hợp tác kinh doanh.",
       downloadCV: "Tải CV",
       viewCert: "Xem chứng chỉ",
       stats: {
-        projects: "Dự án",
-        passion: "Công nghệ — Frontend & Backend",
-        learning: "Năm — Hành trình tự học",
+        projects: "Dự án đã xây dựng",
+        passion: "Công nghệ yêu thích",
+        learning: "Năm học tập",
       },
       highlights: {
         cleanCode: {

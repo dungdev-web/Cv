@@ -3,7 +3,7 @@
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 "use client";
 import { Project } from "@/lib/type";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +12,7 @@ import { ExternalLink, Github, X } from "lucide-react";
 import MagneticButton from "@/components/MagneticButton";
 import { projects } from "../data/projects";
 import { useI18n } from "@/lib/i18n";
-
+import { createPortal } from "react-dom";
 const allTags = [
   "All",
   ...Array.from(new Set(projects.flatMap((p) => p.tags))),
@@ -143,6 +143,8 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [comingSoon, setComingSoon] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(3);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   // ── Helper lấy text theo ngôn ngữ ─────────────────────────────────────────
   const loc = (p: Project) => ({
     title: lang === "vi" && p.titleVi ? p.titleVi : p.title,
@@ -212,6 +214,21 @@ export default function Projects() {
                   style={{ transformStyle: "preserve-3d" }}
                 >
                   <div className="relative overflow-hidden">
+                    {project.type && (
+                      <div className="absolute top-3 right-3 z-20">
+                        <span
+                          className={`text-[10px] font-black px-2.5 py-1 rounded-full border backdrop-blur-sm ${
+                            project.type === "Fullstack"
+                              ? "bg-purple-500/20 text-purple-400 border-purple-400/40"
+                              : project.type === "Frontend"
+                                ? "bg-blue-500/20 text-blue-400 border-blue-400/40"
+                                : "bg-green-500/20 text-green-400 border-green-400/40"
+                          }`}
+                        >
+                          {project.type}
+                        </span>
+                      </div>
+                    )}
                     <img
                       src={project.image}
                       alt={loc(project).title}
@@ -333,151 +350,156 @@ export default function Projects() {
         </motion.div>
       )}
       {/* Modal */}
-      <AnimatePresence>
-        {selectedProject && (
-          <motion.div
-            variants={backdropVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            onClick={() => setSelectedProject(null)}
-            className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
-          >
-            <motion.div
-              variants={modalVariants}
-              onClick={(e) => e.stopPropagation()}
-              className="bg-background rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-            >
-              <div className="relative h-64 overflow-hidden">
-                <img
-                  src={selectedProject.image}
-                  alt={selectedProject.title}
-                  className="w-full h-full object-cover"
-                />
-                <button
-                  onClick={() => setSelectedProject(null)}
-                  className="absolute top-4 right-4 rounded-full p-2 transition-all duration-200 hover:scale-110"
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {selectedProject && (
+              <motion.div
+                variants={backdropVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                onClick={() => setSelectedProject(null)}
+                className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+              >
+                <motion.div
+                  variants={modalVariants}
+                  onClick={(e) => e.stopPropagation()}
+                  className="bg-background rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
                 >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-              <div className="p-8">
-                <div className="mb-6">
-                  <h2 className="text-3xl font-bold mb-4">
-                    {loc(selectedProject).title}
-                  </h2>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedProject.tags.map((tag) => (
-                      <Badge
-                        key={tag}
-                        className="rounded-full bg-blue-100 text-blue-800"
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-                <div className="mb-6">
-                  <h3 className="text-lg font-semibold mb-2">
-                    {t.projects.description}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {loc(selectedProject).fullDescription}
-                  </p>
-                </div>
-                {loc(selectedProject).features && (
-                  <div className="mb-6">
-                    <h3 className="text-lg font-semibold mb-3">
-                      {t.projects.mainFeatures}
-                    </h3>
-                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {loc(selectedProject).features!.map((feature, idx) => (
-                        <motion.li
-                          key={idx}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: idx * 0.1 }}
-                          className="flex items-center gap-2 text-muted-foreground"
-                        >
-                          <span className="w-2 h-2 bg-blue-600 rounded-full" />
-                          {feature}
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                <div className="flex gap-3">
-                  {selectedProject.demo && (
-                    <Button
-                      size="lg"
-                      className="gap-2 flex-1"
-                      onClick={() => {
-                        if (selectedProject.demo === "#") {
-                          setComingSoon(t.projects.demoSoon);
-                        } else {
-                          window.open(selectedProject.demo, "_blank");
-                        }
-                      }}
+                  <div className="relative h-64 overflow-hidden">
+                    <img
+                      src={selectedProject.image}
+                      alt={selectedProject.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      onClick={() => setSelectedProject(null)}
+                      className="absolute top-4 right-4 rounded-full p-2 transition-all duration-200 hover:scale-110"
                     >
-                      <ExternalLink className="w-5 h-5" />
-                      {t.projects.viewDemo}
-                    </Button>
-                  )}
-                  {selectedProject.githubFe || selectedProject.githubBe ? (
-                    <div className="flex gap-2 flex-1">
-                      {selectedProject.githubFe && (
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                  <div className="p-8">
+                    <div className="mb-6">
+                      <h2 className="text-3xl font-bold mb-4">
+                        {loc(selectedProject).title}
+                      </h2>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedProject.tags.map((tag) => (
+                          <Badge
+                            key={tag}
+                            className="rounded-full bg-blue-100 text-blue-800"
+                          >
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="mb-6">
+                      <h3 className="text-lg font-semibold mb-2">
+                        {t.projects.description}
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {loc(selectedProject).fullDescription}
+                      </p>
+                    </div>
+                    {loc(selectedProject).features && (
+                      <div className="mb-6">
+                        <h3 className="text-lg font-semibold mb-3">
+                          {t.projects.mainFeatures}
+                        </h3>
+                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {loc(selectedProject).features!.map(
+                            (feature, idx) => (
+                              <motion.li
+                                key={idx}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: idx * 0.1 }}
+                                className="flex items-center gap-2 text-muted-foreground"
+                              >
+                                <span className="w-2 h-2 bg-blue-600 rounded-full" />
+                                {feature}
+                              </motion.li>
+                            ),
+                          )}
+                        </ul>
+                      </div>
+                    )}
+                    <div className="flex gap-3">
+                      {selectedProject.demo && (
                         <Button
                           size="lg"
-                          variant="outline"
-                          className="gap-1 flex-1"
-                          onClick={() =>
-                            window.open(selectedProject.githubFe!, "_blank")
-                          }
+                          className="gap-2 flex-1"
+                          onClick={() => {
+                            if (selectedProject.demo === "#") {
+                              setComingSoon(t.projects.demoSoon);
+                            } else {
+                              window.open(selectedProject.demo, "_blank");
+                            }
+                          }}
                         >
-                          <Github className="w-5 h-5" />
-                          FE
+                          <ExternalLink className="w-5 h-5" />
+                          {t.projects.viewDemo}
                         </Button>
                       )}
-                      {selectedProject.githubBe && (
-                        <Button
-                          size="lg"
-                          variant="outline"
-                          className="gap-1 flex-1"
-                          onClick={() =>
-                            window.open(selectedProject.githubBe!, "_blank")
-                          }
-                        >
-                          <Github className="w-5 h-5" />
-                          BE
-                        </Button>
+                      {selectedProject.githubFe || selectedProject.githubBe ? (
+                        <div className="flex gap-2 flex-1">
+                          {selectedProject.githubFe && (
+                            <Button
+                              size="lg"
+                              variant="outline"
+                              className="gap-1 flex-1"
+                              onClick={() =>
+                                window.open(selectedProject.githubFe!, "_blank")
+                              }
+                            >
+                              <Github className="w-5 h-5" />
+                              FE
+                            </Button>
+                          )}
+                          {selectedProject.githubBe && (
+                            <Button
+                              size="lg"
+                              variant="outline"
+                              className="gap-1 flex-1"
+                              onClick={() =>
+                                window.open(selectedProject.githubBe!, "_blank")
+                              }
+                            >
+                              <Github className="w-5 h-5" />
+                              BE
+                            </Button>
+                          )}
+                        </div>
+                      ) : (
+                        selectedProject.github && (
+                          <Button
+                            size="lg"
+                            variant="outline"
+                            className="gap-2 flex-1"
+                            onClick={() => {
+                              if (selectedProject.github === "#") {
+                                setComingSoon(t.projects.codeSoon);
+                              } else {
+                                window.open(selectedProject.github!, "_blank");
+                              }
+                            }}
+                          >
+                            <Github className="w-5 h-5" />
+                            {t.projects.viewCode}
+                          </Button>
+                        )
                       )}
                     </div>
-                  ) : (
-                    selectedProject.github && (
-                      <Button
-                        size="lg"
-                        variant="outline"
-                        className="gap-2 flex-1"
-                        onClick={() => {
-                          if (selectedProject.github === "#") {
-                            setComingSoon(t.projects.codeSoon);
-                          } else {
-                            window.open(selectedProject.github!, "_blank");
-                          }
-                        }}
-                      >
-                        <Github className="w-5 h-5" />
-                        {t.projects.viewCode}
-                      </Button>
-                    )
-                  )}
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body,
         )}
-      </AnimatePresence>
-
       <AnimatePresence>
         {comingSoon && (
           <motion.div

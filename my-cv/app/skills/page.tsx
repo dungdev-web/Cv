@@ -1,6 +1,5 @@
 // app/skills/page.tsx
 "use client";
-
 import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
@@ -15,137 +14,8 @@ import {
   Database,
   Smartphone,
 } from "lucide-react";
+import { skills } from "../data/skills";
 import { useI18n } from "@/lib/i18n";
-
-// ── Data ───────────────────────────────────────────────────────────────────────
-const skills = [
-  {
-    name: "HTML",
-    level: "Advanced" as const,
-    bg: "bg-orange-500/10",
-    text: "text-orange-500",
-    border: "border-orange-500/30",
-    icon: "html5",
-    color: "e34f26",
-  },
-  {
-    name: "CSS",
-    level: "Advanced" as const,
-    bg: "bg-blue-500/10",
-    text: "text-blue-400",
-    border: "border-blue-400/30",
-    icon: "css",
-    color: "1572b6",
-  },
-  {
-    name: "JavaScript",
-    level: "Advanced" as const,
-    bg: "bg-yellow-500/10",
-    text: "text-yellow-400",
-    border: "border-yellow-400/30",
-    icon: "javascript",
-    color: "f7df1e",
-  },
-  {
-    name: "TypeScript",
-    level: "Intermediate" as const,
-    bg: "bg-blue-600/10",
-    text: "text-blue-500",
-    border: "border-blue-500/30",
-    icon: "typescript",
-    color: "3178c6",
-  },
-  {
-    name: "React",
-    level: "Intermediate" as const,
-    bg: "bg-cyan-500/10",
-    text: "text-cyan-400",
-    border: "border-cyan-400/30",
-    icon: "react",
-    color: "61dafb",
-  },
-  {
-    name: "Next.js",
-    level: "Beginner" as const,
-    bg: "bg-slate-500/10",
-    text: "text-slate-400",
-    border: "border-slate-400/30",
-    icon: "nextdotjs",
-    color: "ffffff",
-  },
-  {
-    name: "Tailwind",
-    level: "Advanced" as const,
-    bg: "bg-teal-500/10",
-    text: "text-teal-400",
-    border: "border-teal-400/30",
-    icon: "tailwindcss",
-    color: "06b6d4",
-  },
-  {
-    name: "Node.js",
-    level: "Beginner" as const,
-    bg: "bg-green-500/10",
-    text: "text-green-500",
-    border: "border-green-500/30",
-    icon: "nodedotjs",
-    color: "5fa04e",
-  },
-  {
-    name: "NestJS",
-    level: "Beginner" as const,
-    bg: "bg-red-500/10",
-    text: "text-red-400",
-    border: "border-red-400/30",
-    icon: "nestjs",
-    color: "e0234e",
-  },
-  {
-    name: "MongoDB",
-    level: "Beginner" as const,
-    bg: "bg-green-600/10",
-    text: "text-green-500",
-    border: "border-green-500/30",
-    icon: "mongodb",
-    color: "47a248",
-  },
-  {
-    name: "PostgreSQL",
-    level: "Beginner" as const,
-    bg: "bg-blue-700/10",
-    text: "text-blue-600",
-    border: "border-blue-600/30",
-    icon: "postgresql",
-    color: "336791",
-  },
-  {
-    name: "Firebase",
-    level: "Intermediate" as const,
-    bg: "bg-amber-500/10",
-    text: "text-amber-400",
-    border: "border-amber-400/30",
-    icon: "firebase",
-    color: "dd2c00",
-  },
-  {
-    name: "MySQL",
-    level: "Beginner" as const,
-    bg: "bg-sky-500/10",
-    text: "text-sky-400",
-    border: "border-sky-400/30",
-    icon: "mysql",
-    color: "4479a1",
-  },
-  {
-    name: "Docker",
-    level: "Beginner" as const,
-    bg: "bg-blue-400/10",
-    text: "text-blue-300",
-    border: "border-blue-300/30",
-    icon: "docker",
-    color: "2496ed",
-  },
-];
 
 const levelConfig = {
   Advanced: {
@@ -544,7 +414,12 @@ function HorizontalTypewriterNode({
 export default function Skills() {
   const { t } = useI18n();
   const [showAllSkills, setShowAllSkills] = useState(false);
-  const visibleSkills = showAllSkills ? skills : skills.slice(0, 8);
+  const [activeTab, setActiveTab] = useState<
+    "All" | "Frontend" | "Backend" | "Database" | "DevOps"
+  >("All");
+  const tabSkills =
+    activeTab === "All" ? skills : skills.filter((s) => s.cat === activeTab);
+  const visibleSkills = showAllSkills ? tabSkills : tabSkills.slice(0, 8);
   return (
     <section
       id="skills"
@@ -602,7 +477,32 @@ export default function Skills() {
               {skills.length}+
             </span>
           </motion.div>
-
+          {/* Tab bar */}
+          <div className="flex gap-2 mb-5 flex-wrap">
+            {(
+              ["All", "Frontend", "Backend", "Database", "DevOps"] as const
+            ).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => {
+                  setActiveTab(tab);
+                  setShowAllSkills(false);
+                }}
+                className={`px-4 py-1.5 rounded-full text-xs font-semibold border transition-all ${
+                  activeTab === tab
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "border-border text-muted-foreground hover:border-primary hover:text-primary"
+                }`}
+              >
+                {tab}
+                <span className="ml-1.5 opacity-60">
+                  {tab === "All"
+                    ? skills.length
+                    : skills.filter((s) => s.cat === tab).length}
+                </span>
+              </button>
+            ))}
+          </div>
           {/* Level legend */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -627,14 +527,16 @@ export default function Skills() {
             ))}
           </div>
 
-          {!showAllSkills && skills.length > 8 && (
+          {!showAllSkills && tabSkills.length > 8 && (
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               onClick={() => setShowAllSkills(true)}
               className="mt-4 w-full py-2.5 rounded-xl border border-dashed border-border text-sm text-muted-foreground hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2"
             >
-              <span>+{skills.length - 8} {t.skills.moretech}</span>
+              <span>
+                +{tabSkills.length - 8} {t.skills.moretech}
+              </span>
               <span className="text-lg">↓</span>
             </motion.button>
           )}

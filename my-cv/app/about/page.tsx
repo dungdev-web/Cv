@@ -102,6 +102,7 @@ export default function About() {
               {stats.map((stat, index) => (
                 <motion.div key={stat.labelKey} initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.6 + index * 0.1 }} whileHover={{ scale: 1.05 }}>
                   <Card className="p-3 text-center hover:shadow-lg transition-all border-2 hover:border-primary/50">
+                  <div className="flex"></div>
                     <stat.icon className="w-5 h-5 text-primary mx-auto mb-1" />
                     <div className="text-xl font-bold">{stat.value}</div>
                     <div className="text-xs text-muted-foreground">{t.about.stats[stat.labelKey]}</div>

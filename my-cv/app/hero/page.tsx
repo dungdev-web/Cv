@@ -1,6 +1,5 @@
 // app/hero/page.tsx
 "use client";
-
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -20,7 +19,7 @@ export default function Hero() {
     { icon: Mail,     href: "mailto:dung.dev.web@gmail.com",                                 label: "Email" },
   ];
 
-  const skills = ["React", "Next.js", "TypeScript", "Tailwind CSS", "MUI"];
+  const skills = ["React", "Next.js", "TypeScript", "Tailwind CSS", "MUI", "Node.js", "Express", "MongoDB","MySQL"];
 
   return (
     <section id="home" className="relative container mx-auto min-h-[90vh] flex items-center px-4 py-20 overflow-hidden">
