@@ -7,11 +7,13 @@ import { motion } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 import MobileMenu from "./MobileMenu";
 import { useI18n } from "@/lib/i18n";
+import { usePathname,useRouter } from "next/navigation";
 
 export default function Navbar() {
   const { lang, setLang, t } = useI18n();
   const [active, setActive] = useState("home");
-
+  const router = useRouter();
+  const pathname = usePathname();
   const items = [
     { id: "home",     label: t.nav.home },
     { id: "about",    label: t.nav.about },
@@ -54,7 +56,13 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScrollSpy);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
-
+ const handleLogoClick = () => {
+    if (pathname.startsWith("/admin")) {
+      router.push("/");
+    } else {
+      handleScroll("home");
+    }
+  };
   return (
     <motion.header
       initial={{ y: -80, opacity: 0 }}
@@ -64,7 +72,7 @@ export default function Navbar() {
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
         {/* Logo */}
-        <button onClick={() => handleScroll("home")} className="text-xl font-bold">
+        <button onClick={handleLogoClick} className="text-xl font-bold">
           Dũng.dev
         </button>
 

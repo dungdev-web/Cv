@@ -1,12 +1,19 @@
 "use client";
 // app/admin/page.tsx
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Upload, FileText, CheckCircle, XCircle, LogOut, ExternalLink } from "lucide-react";
+import {
+  Upload,
+  FileText,
+  CheckCircle,
+  XCircle,
+  LogOut,
+  ExternalLink,
+} from "lucide-react";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -17,7 +24,28 @@ export default function AdminDashboard() {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [dragOver, setDragOver] = useState(false);
+  const [cvData, setCvData] = useState<{
+    files: { name: string; size: number; lastModified: string }[];
+    active: string | null;
+  }>({ files: [], active: null });
 
+  const fetchCvData = () => {
+    fetch("/api/admin/upload-cv")
+      .then((r) => r.json())
+      .then(setCvData);
+  };
+
+  useEffect(() => {
+    fetchCvData();
+  }, []);
+  const handleSetActive = async (filename: string) => {
+    await fetch("/api/admin/upload-cv", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ filename }),
+    });
+    fetchCvData(); // refresh
+  };
   const handleFile = (f: File) => {
     if (f.type !== "application/pdf") {
       setStatus("error");
@@ -68,6 +96,67 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-background p-6">
+      {/* Thẻ CV hiện tại — đặt trước Upload card */}
+      <Card className="p-5 border-2 mb-4">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+          Chọn CV hiện tại
+        </h2>
+
+        {cvData.files.length === 0 ? (
+          <p className="text-sm text-muted-foreground italic">
+            Chưa có file PDF nào.
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {cvData.files.map((f) => (
+              <div
+                key={f.name}
+                className={`flex items-center justify-between p-3 rounded-lg border-2 transition-all ${
+                  cvData.active === f.name
+                    ? "border-primary bg-primary/5"
+                    : "border-border hover:border-primary/40"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`p-2 rounded-lg ${cvData.active === f.name ? "bg-primary/10" : "bg-red-500/10"}`}
+                  >
+                    <FileText
+                      className={`w-4 h-4 ${cvData.active === f.name ? "text-primary" : "text-red-400"}`}
+                    />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold flex items-center gap-2">
+                      {f.name}
+                      {cvData.active === f.name && (
+                        <span className="text-[10px] bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
+                          Active
+                        </span>
+                      )}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {(f.size / 1024).toFixed(1)} KB ·{" "}
+                      {new Date(f.lastModified).toLocaleDateString("vi-VN")}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" asChild>
+                    <a href={`/pdf/${f.name}`} target="_blank">
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </Button>
+                  {cvData.active !== f.name && (
+                    <Button size="sm" onClick={() => handleSetActive(f.name)}>
+                      Dùng file này
+                    </Button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </Card>
       <div className="max-w-xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -77,7 +166,11 @@ export default function AdminDashboard() {
           </div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" asChild>
-              <a href="/pdf/LuuDucDung_InternFresher_Frontend.pdf" target="_blank" rel="noopener noreferrer">
+              <a
+                href="/pdf/LuuDucDung_InternFresher_Frontend.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <ExternalLink className="w-4 h-4 mr-2" />
                 Xem CV hiện tại
               </a>
@@ -98,11 +191,18 @@ export default function AdminDashboard() {
 
           {/* Drop zone */}
           <motion.div
-            onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragOver(true);
+            }}
             onDragLeave={() => setDragOver(false)}
             onDrop={handleDrop}
             onClick={() => inputRef.current?.click()}
-            animate={{ borderColor: dragOver ? "hsl(var(--primary))" : "hsl(var(--border))" }}
+            animate={{
+              borderColor: dragOver
+                ? "hsl(var(--primary))"
+                : "hsl(var(--border))",
+            }}
             className="border-2 border-dashed rounded-xl p-10 text-center cursor-pointer transition-colors hover:border-primary/50 hover:bg-primary/5"
           >
             <input
@@ -110,7 +210,10 @@ export default function AdminDashboard() {
               type="file"
               accept="application/pdf"
               className="hidden"
-              onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) handleFile(f);
+              }}
             />
             <Upload className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
             {file ? (
@@ -123,8 +226,12 @@ export default function AdminDashboard() {
             ) : (
               <div>
                 <p className="font-medium">Kéo thả PDF vào đây</p>
-                <p className="text-sm text-muted-foreground mt-1">hoặc click để chọn file</p>
-                <p className="text-xs text-muted-foreground mt-2">Tối đa 10MB</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  hoặc click để chọn file
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Tối đa 10MB
+                </p>
               </div>
             )}
           </motion.div>
@@ -142,10 +249,11 @@ export default function AdminDashboard() {
                     : "bg-red-500/10 text-red-500"
                 }`}
               >
-                {status === "success"
-                  ? <CheckCircle className="w-4 h-4 shrink-0" />
-                  : <XCircle className="w-4 h-4 shrink-0" />
-                }
+                {status === "success" ? (
+                  <CheckCircle className="w-4 h-4 shrink-0" />
+                ) : (
+                  <XCircle className="w-4 h-4 shrink-0" />
+                )}
                 {message}
               </motion.div>
             )}
@@ -173,7 +281,8 @@ export default function AdminDashboard() {
 
         {/* Info */}
         <p className="text-xs text-muted-foreground text-center mt-4">
-          File sẽ được lưu tại <code className="bg-secondary px-1 rounded">public/pdf/cv.pdf</code>
+          File sẽ được lưu tại{" "}
+          <code className="bg-secondary px-1 rounded">public/pdf/cv.pdf</code>
         </p>
       </div>
     </div>

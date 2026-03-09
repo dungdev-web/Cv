@@ -1,9 +1,8 @@
 // app/api/admin/upload-cv/route.ts
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { writeFile, mkdir } from "fs/promises";
+import { readdir, stat, readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
-
 const SESSION_SECRET = process.env.SESSION_SECRET ?? "my-secret-key";
 
 export async function POST(req: Request) {
@@ -38,4 +37,44 @@ export async function POST(req: Request) {
   await writeFile(path.join(dir, "cv.pdf"), buffer);
 
   return NextResponse.json({ ok: true, path: "/pdf/cv.pdf" });
+}
+export async function GET() {
+  try {
+    const dir = path.join(process.cwd(), "public", "pdf");
+    const files = await readdir(dir);
+    const pdfs = await Promise.all(
+      files
+        .filter(f => f.endsWith(".pdf"))
+        .map(async (f) => {
+          const s = await stat(path.join(dir, f));
+          return { name: f, size: s.size, lastModified: s.mtime };
+        })
+    );
+
+    // Đọc file active hiện tại
+    let active = "cv.pdf";
+    try {
+      active = await readFile(path.join(process.cwd(), "public", "pdf", ".active"), "utf-8");
+    } catch {}
+
+    return NextResponse.json({ files: pdfs, active });
+  } catch {
+    return NextResponse.json({ files: [], active: null });
+  }
+}
+
+// PATCH — set file active
+export async function PATCH(req: Request) {
+  const cookieStore = await cookies();
+  const session = cookieStore.get("admin_session");
+  if (!session || session.value !== SESSION_SECRET) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { filename } = await req.json();
+  await writeFile(
+    path.join(process.cwd(), "public", "pdf", ".active"),
+    filename
+  );
+  return NextResponse.json({ ok: true, active: filename });
 }
