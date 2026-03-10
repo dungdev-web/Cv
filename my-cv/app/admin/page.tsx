@@ -25,7 +25,12 @@ export default function AdminDashboard() {
   const [message, setMessage] = useState("");
   const [dragOver, setDragOver] = useState(false);
   const [cvData, setCvData] = useState<{
-    files: { name: string; size: number; lastModified: string }[];
+    files: {
+      name: string;
+      url: string;
+      size: number;
+      uploadedAt: string;
+    }[];
     active: string | null;
   }>({ files: [], active: null });
 
@@ -81,6 +86,7 @@ export default function AdminDashboard() {
       setStatus("success");
       setMessage("✅ Upload thành công! CV đã được cập nhật.");
       setFile(null);
+      fetchCvData();
     } else {
       const data = await res.json();
       setStatus("error");
@@ -136,13 +142,14 @@ export default function AdminDashboard() {
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {(f.size / 1024).toFixed(1)} KB ·{" "}
-                      {new Date(f.lastModified).toLocaleDateString("vi-VN")}
+                      {new Date(f.uploadedAt).toLocaleDateString("vi-VN")}
                     </p>
                   </div>
                 </div>
                 <div className="flex gap-2">
                   <Button variant="outline" size="sm" asChild>
-                    <a href={`/pdf/${f.name}`} target="_blank">
+                    <a href={f.url} target="_blank">
+                      {" "}
                       <ExternalLink className="w-3 h-3" />
                     </a>
                   </Button>
@@ -167,7 +174,7 @@ export default function AdminDashboard() {
           <div className="flex gap-2">
             <Button variant="outline" size="sm" asChild>
               <a
-                href="/pdf/LuuDucDung_InternFresher_Frontend.pdf"
+                href={cvData.files.find((f) => f.name === cvData.active)?.url}
                 target="_blank"
                 rel="noopener noreferrer"
               >

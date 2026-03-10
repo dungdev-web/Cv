@@ -1,19 +1,22 @@
 // app/api/admin/upload-cv/route.ts
+
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { readdir, stat, readFile, writeFile, mkdir } from "fs/promises";
-import path from "path";
+import { put, list,get } from "@vercel/blob";
+
 const SESSION_SECRET = process.env.SESSION_SECRET ?? "my-secret-key";
 
+// ─────────────────────────────────────────
+// POST — upload CV
+// ─────────────────────────────────────────
 export async function POST(req: Request) {
-  // ── Kiểm tra auth ──────────────────────────────────────────────────────────
-  const cookieStore = await cookies();
+  const cookieStore =await cookies();
   const session = cookieStore.get("admin_session");
+
   if (!session || session.value !== SESSION_SECRET) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // ── Lấy file từ form data ──────────────────────────────────────────────────
   const formData = await req.formData();
   const file = formData.get("cv") as File | null;
 
@@ -29,52 +32,83 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "File too large (max 10MB)" }, { status: 400 });
   }
 
-  // ── Lưu file vào public/pdf/ ───────────────────────────────────────────────
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const dir = path.join(process.cwd(), "public", "pdf");
+  const filename = `cv-${Date.now()}.pdf`;
 
-  await mkdir(dir, { recursive: true });
-  await writeFile(path.join(dir, "cv.pdf"), buffer);
+  const blob = await put(filename, file, {
+    access: "public",
+  });
 
-  return NextResponse.json({ ok: true, path: "/pdf/cv.pdf" });
+  return NextResponse.json({
+    ok: true,
+    url: blob.url,
+    filename
+  });
 }
+
+// ─────────────────────────────────────────
+// GET — list CV
+// ─────────────────────────────────────────
 export async function GET() {
   try {
-    const dir = path.join(process.cwd(), "public", "pdf");
-    const files = await readdir(dir);
-    const pdfs = await Promise.all(
-      files
-        .filter(f => f.endsWith(".pdf"))
-        .map(async (f) => {
-          const s = await stat(path.join(dir, f));
-          return { name: f, size: s.size, lastModified: s.mtime };
-        })
-    );
+    const { blobs } = await list();
 
-    // Đọc file active hiện tại
-    let active = "cv.pdf";
+    const pdfs = blobs
+      .filter(b => b.pathname.endsWith(".pdf"))
+      .map(b => ({
+        name: b.pathname,
+        url: b.url,
+        size: b.size,
+        uploadedAt: b.uploadedAt
+      }));
+
+    // lấy active CV
+    let active: string | null = null;
+
     try {
-      active = await readFile(path.join(process.cwd(), "public", "pdf", ".active"), "utf-8");
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BLOB_BASE_URL}/active-cv.json`
+      );
+      const data = await res.json();
+      active = data.filename;
     } catch {}
 
-    return NextResponse.json({ files: pdfs, active });
+    return NextResponse.json({
+      files: pdfs,
+      active
+    });
+
   } catch {
-    return NextResponse.json({ files: [], active: null });
+    return NextResponse.json({
+      files: [],
+      active: null
+    });
   }
 }
 
-// PATCH — set file active
+// ─────────────────────────────────────────
+// PATCH — set active CV
+// ─────────────────────────────────────────
 export async function PATCH(req: Request) {
+
   const cookieStore = await cookies();
   const session = cookieStore.get("admin_session");
+
   if (!session || session.value !== SESSION_SECRET) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const { filename } = await req.json();
-  await writeFile(
-    path.join(process.cwd(), "public", "pdf", ".active"),
-    filename
+
+  await put(
+    "active-cv.json",
+    new Blob([JSON.stringify({ filename })]),
+    {
+      access: "public",
+    }
   );
-  return NextResponse.json({ ok: true, active: filename });
+
+  return NextResponse.json({
+    ok: true,
+    active: filename
+  });
 }
