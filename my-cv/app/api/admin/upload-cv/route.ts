@@ -2,7 +2,7 @@
 
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { put, list,get } from "@vercel/blob";
+import { put, list, get } from "@vercel/blob";
 
 const SESSION_SECRET = process.env.SESSION_SECRET ?? "my-secret-key";
 
@@ -10,7 +10,7 @@ const SESSION_SECRET = process.env.SESSION_SECRET ?? "my-secret-key";
 // POST — upload CV
 // ─────────────────────────────────────────
 export async function POST(req: Request) {
-  const cookieStore =await cookies();
+  const cookieStore = await cookies();
   const session = cookieStore.get("admin_session");
 
   if (!session || session.value !== SESSION_SECRET) {
@@ -25,11 +25,17 @@ export async function POST(req: Request) {
   }
 
   if (file.type !== "application/pdf") {
-    return NextResponse.json({ error: "Only PDF files allowed" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Only PDF files allowed" },
+      { status: 400 },
+    );
   }
 
   if (file.size > 10 * 1024 * 1024) {
-    return NextResponse.json({ error: "File too large (max 10MB)" }, { status: 400 });
+    return NextResponse.json(
+      { error: "File too large (max 10MB)" },
+      { status: 400 },
+    );
   }
 
   const filename = `cv-${Date.now()}.pdf`;
@@ -41,7 +47,7 @@ export async function POST(req: Request) {
   return NextResponse.json({
     ok: true,
     url: blob.url,
-    filename
+    filename,
   });
 }
 
@@ -52,36 +58,42 @@ export async function GET() {
   try {
     const { blobs } = await list();
 
-    const pdfs = blobs
-      .filter(b => b.pathname.endsWith(".pdf"))
-      .map(b => ({
-        name: b.pathname,
-        url: b.url,
-        size: b.size,
-        uploadedAt: b.uploadedAt
-      }));
+    const files = blobs.filter((b) => b.pathname.endsWith(".pdf"));
 
-    // lấy active CV
     let active: string | null = null;
 
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BLOB_BASE_URL}/active-cv.json`
-      );
-      const data = await res.json();
-      active = data.filename;
-    } catch {}
+    const activeBlob = blobs.find((b) => b.pathname === "active-cv.json");
+console.log("ALL BLOBS:", blobs.map((b) => b.pathname));
+    if (activeBlob) {
+  const res = await fetch(activeBlob.url, { cache: "no-store" });
 
-    return NextResponse.json({
-      files: pdfs,
-      active
-    });
+  if (res.ok) {
+    const text = await res.text();
 
-  } catch {
-    return NextResponse.json({
-      files: [],
-      active: null
+    console.log("ACTIVE FILE RAW:", text); // debug
+
+    if (text) {
+      try {
+        const data = JSON.parse(text);
+        active = data.filename ?? null;
+      } catch (err) {
+        console.error("JSON parse error", err);
+      }
+    }
+  }
+}
+
+    return Response.json({
+      files,
+      active,
     });
+  } catch (err) {
+    console.error("GET upload-cv error:", err);
+
+    return Response.json(
+      { files: [], active: null },
+      { status: 500 }
+    );
   }
 }
 
@@ -89,7 +101,6 @@ export async function GET() {
 // PATCH — set active CV
 // ─────────────────────────────────────────
 export async function PATCH(req: Request) {
-
   const cookieStore = await cookies();
   const session = cookieStore.get("admin_session");
 
@@ -99,16 +110,13 @@ export async function PATCH(req: Request) {
 
   const { filename } = await req.json();
 
-  await put(
-    "active-cv.json",
-    new Blob([JSON.stringify({ filename })]),
-    {
-      access: "public",
-    }
-  );
+  await put("active-cv.json", new Blob([JSON.stringify({ filename })]), {
+    access: "public",
+    allowOverwrite: true,
+  });
 
   return NextResponse.json({
     ok: true,
-    active: filename
+    active: filename,
   });
 }

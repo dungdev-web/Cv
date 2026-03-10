@@ -26,7 +26,7 @@ export default function AdminDashboard() {
   const [dragOver, setDragOver] = useState(false);
   const [cvData, setCvData] = useState<{
     files: {
-      name: string;
+      pathname: string;
       url: string;
       size: number;
       uploadedAt: string;
@@ -34,11 +34,21 @@ export default function AdminDashboard() {
     active: string | null;
   }>({ files: [], active: null });
 
-  const fetchCvData = () => {
-    fetch("/api/admin/upload-cv")
-      .then((r) => r.json())
-      .then(setCvData);
-  };
+const fetchCvData = async () => {
+  try {
+    const res = await fetch("/api/admin/upload-cv");
+
+    if (!res.ok) {
+      console.error("GET CV failed");
+      return;
+    }
+
+    const data = await res.json();
+    setCvData(data);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   useEffect(() => {
     fetchCvData();
@@ -94,7 +104,9 @@ export default function AdminDashboard() {
     }
     setUploading(false);
   };
-
+useEffect(() => {
+  console.log("CV DATA:", cvData);
+}, [cvData]);
   const handleLogout = async () => {
     await fetch("/api/admin/auth", { method: "DELETE" });
     router.push("/admin/login");
@@ -116,25 +128,25 @@ export default function AdminDashboard() {
           <div className="space-y-2">
             {cvData.files.map((f) => (
               <div
-                key={f.name}
+                key={f.pathname}
                 className={`flex items-center justify-between p-3 rounded-lg border-2 transition-all ${
-                  cvData.active === f.name
+                  cvData.active === f.pathname
                     ? "border-primary bg-primary/5"
                     : "border-border hover:border-primary/40"
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`p-2 rounded-lg ${cvData.active === f.name ? "bg-primary/10" : "bg-red-500/10"}`}
+                    className={`p-2 rounded-lg ${cvData.active === f.pathname ? "bg-primary/10" : "bg-red-500/10"}`}
                   >
                     <FileText
-                      className={`w-4 h-4 ${cvData.active === f.name ? "text-primary" : "text-red-400"}`}
+                      className={`w-4 h-4 ${cvData.active === f.pathname ? "text-primary" : "text-red-400"}`}
                     />
                   </div>
                   <div>
                     <p className="text-sm font-semibold flex items-center gap-2">
-                      {f.name}
-                      {cvData.active === f.name && (
+                      {f.pathname}
+                      {cvData.active === f.pathname && (
                         <span className="text-[10px] bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
                           Active
                         </span>
@@ -153,8 +165,8 @@ export default function AdminDashboard() {
                       <ExternalLink className="w-3 h-3" />
                     </a>
                   </Button>
-                  {cvData.active !== f.name && (
-                    <Button size="sm" onClick={() => handleSetActive(f.name)}>
+                  {cvData.active !== f.pathname && (
+                    <Button size="sm" onClick={() => handleSetActive(f.pathname)}>
                       Dùng file này
                     </Button>
                   )}
@@ -174,7 +186,7 @@ export default function AdminDashboard() {
           <div className="flex gap-2">
             <Button variant="outline" size="sm" asChild>
               <a
-                href={cvData.files.find((f) => f.name === cvData.active)?.url}
+                href={cvData.files.find((f) => f.pathname === cvData.active)?.url}
                 target="_blank"
                 rel="noopener noreferrer"
               >

@@ -24,7 +24,7 @@ import { projects } from "../data/projects";
 export default function About() {
   const { t, lang } = useI18n();
   const [showCertificates, setShowCertificates] = useState(false);
-  const [cv, setCv] = useState("public/LuuDucDung_InternFresher_Frontend.pdf");
+  const [cv, setCv] = useState("");
   const highlights = [
     { icon: Code2, color: "text-blue-500", key: "cleanCode" as const },
     { icon: Rocket, color: "text-purple-500", key: "fastLearner" as const },
@@ -41,12 +41,28 @@ export default function About() {
     { value: "1+", labelKey: "learning" as const, icon: Coffee },
   ];
   useEffect(() => {
-    fetch("/api/admin/upload-cv")
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.active) setCv(`/pdf/${data.active}`);
-      });
-  }, []);
+  const loadCV = async () => {
+    try {
+      const res = await fetch("/api/admin/upload-cv");
+
+      if (!res.ok) return;
+
+      const data = await res.json();
+
+      const activeFile = data.files.find(
+        (file: any) => file.pathname === data.active
+      );
+
+      if (activeFile) {
+        setCv(activeFile.url);
+      }
+    } catch (err) {
+      console.error("Load CV failed", err);
+    }
+  };
+
+  loadCV();
+}, []);
   return (
     <>
       <section
