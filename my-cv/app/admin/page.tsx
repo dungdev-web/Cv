@@ -49,7 +49,6 @@ const fetchCvData = async () => {
     console.error(err);
   }
 };
-
   useEffect(() => {
     fetchCvData();
   }, []);
@@ -59,7 +58,7 @@ const fetchCvData = async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ filename }),
     });
-    fetchCvData(); // refresh
+    setTimeout(fetchCvData, 300);
   };
   const handleFile = (f: File) => {
     if (f.type !== "application/pdf") {

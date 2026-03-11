@@ -63,25 +63,25 @@ export async function GET() {
     let active: string | null = null;
 
     const activeBlob = blobs.find((b) => b.pathname === "active-cv.json");
-console.log("ALL BLOBS:", blobs.map((b) => b.pathname));
+    // console.log("ALL BLOBS:", blobs.map((b) => b.pathname));
     if (activeBlob) {
-  const res = await fetch(activeBlob.url, { cache: "no-store" });
+      const res = await fetch( `${activeBlob.url}?t=${Date.now()}`, { cache: "no-store" });
 
-  if (res.ok) {
-    const text = await res.text();
+      if (res.ok) {
+        const text = await res.text();
 
-    console.log("ACTIVE FILE RAW:", text); // debug
+        // console.log("ACTIVE FILE RAW:", text);
 
-    if (text) {
-      try {
-        const data = JSON.parse(text);
-        active = data.filename ?? null;
-      } catch (err) {
-        console.error("JSON parse error", err);
+        if (text) {
+          try {
+            const data = JSON.parse(text);
+            active = data.filename ?? null;
+          } catch (err) {
+            console.error("JSON parse error", err);
+          }
+        }
       }
     }
-  }
-}
 
     return Response.json({
       files,
@@ -90,10 +90,7 @@ console.log("ALL BLOBS:", blobs.map((b) => b.pathname));
   } catch (err) {
     console.error("GET upload-cv error:", err);
 
-    return Response.json(
-      { files: [], active: null },
-      { status: 500 }
-    );
+    return Response.json({ files: [], active: null }, { status: 500 });
   }
 }
 
