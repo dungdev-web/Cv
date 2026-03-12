@@ -140,4 +140,14 @@ const skills = [
     color: "2496ed",
     cat: "DevOps",
   },
+  {
+    name: "WordPress",
+    level: "Intermediate" as const,
+    bg: "bg-blue-800/10",
+    text: "text-blue-700",
+    border: "border-blue-700/30",
+    icon: "wordpress",
+    color: "21759b",
+    cat: "CMS",
+  }
 ];

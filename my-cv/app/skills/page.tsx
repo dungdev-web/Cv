@@ -415,7 +415,7 @@ export default function Skills() {
   const { t } = useI18n();
   const [showAllSkills, setShowAllSkills] = useState(false);
   const [activeTab, setActiveTab] = useState<
-    "All" | "Frontend" | "Backend" | "Database" | "DevOps"
+    "All" | "Frontend" | "Backend" | "Database" | "DevOps" | "CMS"
   >("All");
   const tabSkills =
     activeTab === "All" ? skills : skills.filter((s) => s.cat === activeTab);
@@ -480,7 +480,7 @@ export default function Skills() {
           {/* Tab bar */}
           <div className="flex gap-2 mb-5 flex-wrap">
             {(
-              ["All", "Frontend", "Backend", "Database", "DevOps"] as const
+              ["All", "Frontend", "Backend", "Database", "DevOps","CMS"] as const
             ).map((tab) => (
               <button
                 key={tab}
