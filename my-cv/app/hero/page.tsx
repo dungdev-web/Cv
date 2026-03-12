@@ -4,12 +4,11 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Github, Linkedin, Mail, ArrowRight, Sparkles, Code2 } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowRight, Sparkles, Code2,Facebook } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { projects } from "../data/projects";
 import { useI18n } from "@/lib/i18n";
-
 export default function Hero() {
   const { t } = useI18n();
 
@@ -17,6 +16,7 @@ export default function Hero() {
     { icon: Github,   href: "https://github.com/dungdev-web/",                              label: "GitHub" },
     { icon: Linkedin, href: "https://www.linkedin.com/in/dev-d%C5%A9ng-15b3143a2/",         label: "LinkedIn" },
     { icon: Mail,     href: "mailto:dung.dev.web@gmail.com",                                 label: "Email" },
+    { icon: Facebook,     href: "https://www.facebook.com/luuducdung123",                                 label: "Facebook" },
   ];
 
   const skills = ["React", "Next.js", "TypeScript", "Tailwind CSS", "MUI", "Node.js", "Express", "MongoDB","MySQL"];
