@@ -43,7 +43,7 @@ export default function Contact() {
 
   const socialLinks = [
     { icon: Github,   label: "GitHub",   url: "https://github.com/dungdev-web/",                      color: "hover:text-blue-600" },
-    { icon: Linkedin, label: "LinkedIn", url: "https://www.linkedin.com/in/dev-d%C5%A9ng-15b3143a2/", color: "hover:text-blue-500" },
+    { icon: Linkedin, label: "LinkedIn", url: "https://www.linkedin.com/in/l%C6%B0u-%C4%91%E1%BB%A9c-d%C5%A9ng-15b3143a2/", color: "hover:text-blue-500" },
     { icon: Twitter,  label: "Twitter",  url: "#",                                                     color: "hover:text-sky-500" },
   ];
 
