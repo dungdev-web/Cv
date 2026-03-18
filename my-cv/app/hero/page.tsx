@@ -14,7 +14,7 @@ export default function Hero() {
 
   const socialLinks = [
     { icon: Github,   href: "https://github.com/dungdev-web/",                              label: "GitHub" },
-    { icon: Linkedin, href: "https://www.linkedin.com/in/dev-d%C5%A9ng-15b3143a2/",         label: "LinkedIn" },
+    { icon: Linkedin, href: "https://www.linkedin.com/in/l%C6%B0u-%C4%91%E1%BB%A9c-d%C5%A9ng-15b3143a2/",         label: "LinkedIn" },
     { icon: Mail,     href: "mailto:dung.dev.web@gmail.com",                                 label: "Email" },
     { icon: Facebook,     href: "https://www.facebook.com/luuducdung123",                                 label: "Facebook" },
   ];
