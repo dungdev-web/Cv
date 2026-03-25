@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react";
 import Hero from "./hero/page";
 import Loader from "@/components/Loader";
 import FloatingAI from "@/components/FloatingAI";
+import GitHubStats from "@/components/GitHubStats";
 
 const About = lazy(() => import("./about/page"));
 const Skills = lazy(() => import("./skills/page"));
@@ -18,13 +19,14 @@ export default function Home() {
       <Suspense fallback={<Loader />}>
         <Skills />
       </Suspense>
+      <GitHubStats />
       <Suspense fallback={<Loader />}>
         <Projects />
       </Suspense>
       <Suspense fallback={<Loader />}>
         <Contact />
       </Suspense>
-       <FloatingAI />
+      <FloatingAI />
     </>
   );
 }

@@ -66,7 +66,7 @@ export default function AIChatbot() {
     <div className="flex flex-col gap-0">
       {/* Header */}
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-indigo-500 flex items-center justify-center text-white text-sm font-medium">
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-indigo-500 flex items-center justify-center text-sm font-medium">
           D
         </div>
         <div>
@@ -93,8 +93,8 @@ export default function AIChatbot() {
               <div
                 className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
                   msg.role === "user"
-                    ? "bg-violet-600 text-white rounded-br-sm"
-                    : "bg-white/10 text-foreground rounded-bl-sm"
+                    ? "bg-violet-600  rounded-br-sm"
+                    : " text-foreground rounded-bl-sm"
                 }`}
               >
                 {msg.content}
@@ -109,7 +109,7 @@ export default function AIChatbot() {
             animate={{ opacity: 1, y: 0 }}
             className="flex justify-start"
           >
-            <div className="bg-white/10 px-4 py-3 rounded-2xl rounded-bl-sm flex gap-1">
+            <div className=" px-4 py-3 rounded-2xl rounded-bl-sm flex gap-1">
               {[0, 1, 2].map((i) => (
                 <span
                   key={i}
@@ -130,7 +130,7 @@ export default function AIChatbot() {
             <button
               key={q}
               onClick={() => send(q)}
-              className="text-xs px-3 py-1.5 rounded-full border border-white/20 hover:bg-white/10 transition-colors text-white/40 hover:text-white/70"
+              className="text-xs px-3 py-1.5 rounded-full border  hover:bg-white/10 transition-colors hover:text-white/70"
             >
               {q}
             </button>
@@ -139,14 +139,14 @@ export default function AIChatbot() {
       )}
 
       {/* Input */}
-      <div className="flex gap-2 border-t border-white/10 pt-3">
+      <div className="flex gap-2 border-t pt-3">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
           placeholder="Hỏi về Dũng..."
-          className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm outline-none focus:border-violet-500 transition-colors"
+          className="flex-1  border rounded-xl px-4 py-2 text-sm outline-none focus:border-violet-500 transition-colors"
           disabled={loading}
         />
         <button

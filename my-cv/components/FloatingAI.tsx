@@ -12,7 +12,6 @@ export default function FloatingAI() {
   const [tab, setTab] = useState<Tab>("chat");
   const ref = useRef<HTMLDivElement>(null);
 
-  // Đóng khi click ngoài
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -33,17 +32,24 @@ export default function FloatingAI() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.95 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="w-[360px] rounded-2xl border border-white/10 bg-[#0f0f11]/95 backdrop-blur shadow-2xl overflow-hidden"
+            className="
+              w-[360px] rounded-2xl shadow-2xl overflow-hidden
+              border border-zinc-200 dark:border-white/10
+              bg-white/90 dark:bg-zinc-900/95
+              backdrop-blur-md
+            "
           >
             {/* Tab bar */}
-            <div className="flex border-b border-white/10">
+            <div className="flex border-b border-zinc-200 dark:border-white/10">
               <button
                 onClick={() => setTab("chat")}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors ${
-                  tab === "chat"
-                    ? "text-white border-b-2 border-violet-500"
-                    : "text-white/40 hover:text-white/70"
-                }`}
+                className={`
+                  flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors
+                  ${tab === "chat"
+                    ? "border-b-2 border-violet-500 text-zinc-900 dark:text-white"
+                    : "text-zinc-400 dark:text-white/40 hover:text-zinc-600 dark:hover:text-white/70"
+                  }
+                `}
               >
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
@@ -52,11 +58,13 @@ export default function FloatingAI() {
               </button>
               <button
                 onClick={() => setTab("recommend")}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors ${
-                  tab === "recommend"
-                    ? "text-white border-b-2 border-violet-500"
-                    : "text-white/40 hover:text-white/70"
-                }`}
+                className={`
+                  flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors
+                  ${tab === "recommend"
+                    ? "border-b-2 border-violet-500 text-zinc-900 dark:text-white"
+                    : "text-zinc-400 dark:text-white/40 hover:text-zinc-600 dark:hover:text-white/70"
+                  }
+                `}
               >
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
@@ -71,11 +79,16 @@ export default function FloatingAI() {
             </div>
 
             {/* Footer */}
-            <div className="px-4 py-2 border-t border-white/5 flex items-center justify-between">
-              <span className="text-[11px] text-white/20">Powered by Groq · Llama 3.3</span>
+            <div className="
+              px-4 py-2 flex items-center justify-between
+              border-t border-zinc-200 dark:border-white/5
+            ">
+              <span className="text-[11px] text-zinc-400 dark:text-white/20">
+                Powered by Groq · Llama 3.3
+              </span>
               <button
                 onClick={() => setOpen(false)}
-                className="text-[11px] text-white/30 hover:text-white/60 transition-colors"
+                className="text-[11px] text-zinc-400 dark:text-white/30 hover:text-zinc-700 dark:hover:text-white/60 transition-colors"
               >
                 Đóng ✕
               </button>
@@ -89,7 +102,7 @@ export default function FloatingAI() {
         onClick={() => setOpen((v) => !v)}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
-        className="relative w-14 h-14 rounded-full bg-violet-600 hover:bg-violet-500 shadow-lg shadow-violet-900/50 flex items-center justify-center transition-colors"
+        className="relative w-14 h-14 rounded-full bg-violet-600 hover:bg-violet-500 shadow-lg shadow-violet-900/30 dark:shadow-violet-900/50 flex items-center justify-center transition-colors"
         aria-label="AI Assistant"
       >
         <AnimatePresence mode="wait">
@@ -115,14 +128,12 @@ export default function FloatingAI() {
               width="22" height="22" viewBox="0 0 24 24" fill="none"
               stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
             >
-              <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z" strokeOpacity="0"/>
-              <circle cx="12" cy="12" r="3" fill="white" stroke="none"/>
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
             </motion.svg>
           )}
         </AnimatePresence>
 
-        {/* Pulse ring khi đóng */}
+        {/* Pulse ring */}
         {!open && (
           <span className="absolute inset-0 rounded-full animate-ping bg-violet-500 opacity-20" />
         )}
