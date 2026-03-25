@@ -66,7 +66,7 @@ export default function Contact() {
           <a href="mailto:dung.dev.web@gmail.com" className="block">
             <Card className="p-6 flex items-center gap-4 hover:shadow-lg transition-shadow">
               <div className="p-3 rounded-xl bg-primary/10"><Mail className="w-6 h-6 text-primary" /></div>
-              <div><p className="text-sm text-muted-foreground">{t.contact.email}</p><p className="font-semibold">dung.dev@gmail.com</p></div>
+              <div><p className="text-sm text-muted-foreground">{t.contact.email}</p><p className="font-semibold">dung.dev.web@gmail.com</p></div>
             </Card>
           </a>
           <a href="tel:0775895973" className="block">
