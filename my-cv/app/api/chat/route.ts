@@ -47,7 +47,7 @@ Tên: Lưu Đức Dũng
 Vị trí: Frontend Developer / Full-stack Developer
 Số điện thoại: 0775895973
 Linkedin: https://www.linkedin.com/in/l%C6%B0u-%C4%91%E1%BB%A9c-d%C5%A9ng-15b3143a2/
-Email: dung.dev.web.com
+Email: dung.dev.web@gmail.com
 GitHub: github.com/dungdev-web
 
 --- Kỹ năng ---
