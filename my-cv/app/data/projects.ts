@@ -83,7 +83,7 @@ export const projects: Project[] = [
       "Tối ưu SEO",
       "Tương thích mobile",
     ],
-    demo: "https://cv-five-beige.vercel.app/",
+    demo: "https://cv-swart-psi-63.vercel.app/",
     github: "https://github.com/dungdev-web/Cv",
     type: "Fullstack"
   },
