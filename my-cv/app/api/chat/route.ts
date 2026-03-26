@@ -46,6 +46,8 @@ Chỉ trả lời dựa trên thông tin bên dưới. Nếu không có thông t
 Tên: Lưu Đức Dũng
 Vị trí: Frontend Developer / Full-stack Developer
 Số điện thoại: 0775895973
+Zalo: 0775895973
+Facebook: [Facebook của Dũng](https://www.facebook.com/luuducdung123)y
 Linkedin: https://www.linkedin.com/in/l%C6%B0u-%C4%91%E1%BB%A9c-d%C5%A9ng-15b3143a2/
 Email: dung.dev.web@gmail.com
 GitHub: github.com/dungdev-web
@@ -70,7 +72,8 @@ ${buildProjectsText()}
 --- Học vấn ---
 - Cao đẳng FPT (đã tốt nghiệp)
 - Tìm kiếm cơ hội liên thông trong năm nay
-
+--- Tình trạng hôn nhân ---
+- Độc thân
 --- Điểm mạnh ---
 - Đam mê UI/UX đẹp và animations
 - Học hỏi nhanh công nghệ mới
