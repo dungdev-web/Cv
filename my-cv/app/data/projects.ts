@@ -463,4 +463,38 @@ export const projects: Project[] = [
     githubBe: "https://github.com/dungdev-web/BE-datn-",
     type: "Fullstack"
   },
+  {
+  id: "image-scanner",
+  title: "Image Scanner Extension",
+  titleVi: "Extension Image Scanner",
+  description:
+    "Chrome Extension that scans all images on the current page and displays them in a SidePanel with search, filter, and AI processing.",
+  descriptionVi:
+    "Chrome Extension quét toàn bộ ảnh trên trang hiện tại, hiển thị trong SidePanel với tìm kiếm, lọc và xử lý AI trực tiếp trên trình duyệt.",
+  fullDescription:
+    "Image Scanner is a Chrome Extension that scans all images on the current webpage — including <img> tags, CSS background-image, <picture>, and SVG <image> — and displays them in a Chrome SidePanel. Built with ReactJS, TypeScript, and TensorFlow.js for in-browser AI processing without any API key. Features include thumbnail preview, image size and URL display, search by URL, size filtering, image count badge on the extension icon, and auto-detection of new images via MutationObserver.",
+  fullDescriptionVi:
+    "Image Scanner là Chrome Extension quét toàn bộ ảnh trên trang web hiện tại — bao gồm thẻ <img>, CSS background-image, <picture> và SVG <image> — và hiển thị trong Chrome SidePanel. Được xây dựng với ReactJS, TypeScript và TensorFlow.js để xử lý AI ngay trên trình duyệt mà không cần API key. Tính năng gồm xem thumbnail, hiển thị kích thước và URL ảnh, tìm kiếm theo URL, lọc theo kích thước, badge số lượng ảnh trên icon và tự động phát hiện ảnh mới qua MutationObserver.",
+  image: "/image-scanner.png",
+  tags: ["React", "TypeScript", "TensorFlow.js", "Ant Design", "AG Grid", "Vite", "Chrome Extension"],
+  features: [
+    "Scan all images: <img>, CSS background-image, <picture>, SVG <image>",
+    "Display thumbnail, image size and URL in a data grid",
+    "Search images by URL",
+    "Filter by size: Small / Medium / Large",
+    "Image count badge on extension icon",
+    "Auto-detect new images with MutationObserver",
+  ],
+  featuresVi: [
+    "Quét tất cả ảnh: <img>, CSS background-image, <picture>, SVG <image>",
+    "Hiển thị thumbnail, kích thước và URL ảnh dạng bảng",
+    "Tìm kiếm ảnh theo URL",
+    "Lọc theo kích thước: Nhỏ / Vừa / Lớn",
+    "Badge số lượng ảnh trên icon extension",
+    "Tự động phát hiện ảnh mới bằng MutationObserver",
+  ],
+  demo: "#",
+  github: "https://github.com/dungdev-web/test_extention",
+  type: "Extension"
+},
 ];
