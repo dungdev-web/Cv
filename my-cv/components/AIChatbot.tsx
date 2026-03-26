@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import React from "react";
 interface Message {
   role: "user" | "assistant";
   content: string;
@@ -14,7 +14,44 @@ const SUGGESTED_QUESTIONS = [
   "Dũng đã làm những project nào?",
   "Dũng phù hợp vị trí nào?",
 ];
+function renderContent(content: string) {
+  const regex = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)|(https?:\/\/[^\s]+)/g;
+  const result: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match;
 
+  while ((match = regex.exec(content)) !== null) {
+    if (match.index > lastIndex) {
+      result.push(content.slice(lastIndex, match.index));
+    }
+
+    if (match[1]) {
+      // Markdown link [text](url)
+      result.push(
+        <a key={match.index} href={match[2]} target="_blank" rel="noopener noreferrer"
+          className="text-violet-400 underline hover:text-violet-300 transition-colors">
+          {match[1]}
+        </a>
+      );
+    } else {
+      // Plain URL
+      result.push(
+        <a key={match.index} href={match[3]} target="_blank" rel="noopener noreferrer"
+          className="text-violet-400 underline hover:text-violet-300 transition-colors">
+          {match[3]}
+        </a>
+      );
+    }
+
+    lastIndex = regex.lastIndex;
+  }
+
+  if (lastIndex < content.length) {
+    result.push(content.slice(lastIndex));
+  }
+
+  return result;
+}
 export default function AIChatbot() {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -97,7 +134,7 @@ export default function AIChatbot() {
                     : " text-foreground rounded-bl-sm"
                 }`}
               >
-                {msg.content}
+                {msg.role === "assistant" ? renderContent(msg.content) : msg.content}
               </div>
             </motion.div>
           ))}

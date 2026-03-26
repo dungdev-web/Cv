@@ -55,7 +55,8 @@ GitHub: github.com/dungdev-web
 --- Kỹ năng ---
 Frontend: React, Next.js, TypeScript, Tailwind CSS, Framer Motion, HTML/CSS
 Backend: Node.js, Firebase, REST API
-Database: Firebase Firestore, MongoDB, PostgreSQL
+Database: Firebase Firestore, MongoDy
+B, PostgreSQL
 Tools: Git, Vercel, Figma, VS Code
 Đang học: Redis, NestJs, Docker
 
