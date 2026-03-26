@@ -1,13 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { projects } from "@/app/data/projects";
-
+import { notifyChat } from "@/lib/telegram";
 const groq = new OpenAI({
   apiKey: process.env.GROQ_API_KEY!,
   baseURL: "https://api.groq.com/openai/v1",
 });
-
-// Map projects array thành text cho system prompt
+function extractContent(content: unknown): string {
+  if (typeof content === "string") return content;
+  if (Array.isArray(content)) {
+    return content
+      .filter((c: any) => c.type === "text")
+      .map((c: any) => c.text)
+      .join(" ");
+  }
+  return String(content ?? "");
+}
 const buildProjectsText = () =>
   projects
     .map((p, i) => {
@@ -18,9 +26,7 @@ const buildProjectsText = () =>
         `   Mô tả: ${p.descriptionVi ?? p.description}`,
       ];
       if (p.features?.length)
-        lines.push(
-          `   Tính năng: ${(p.featuresVi ?? p.features)?.join(", ")}`
-        );
+        lines.push(`   Tính năng: ${(p.featuresVi ?? p.features)?.join(", ")}`);
       if (p.demo) lines.push(`   Demo: ${p.demo}`);
       if (p.github) lines.push(`   GitHub: ${p.github}`);
       if (p.githubFe) lines.push(`   GitHub FE: ${p.githubFe}`);
@@ -37,7 +43,7 @@ Chỉ trả lời dựa trên thông tin bên dưới. Nếu không có thông t
 
 === THÔNG TIN VỀ DŨNG ===
 
-Tên: Nguyễn Văn Dũng
+Tên: Lưu Đức Dũng
 Vị trí: Frontend Developer / Full-stack Developer
 Số điện thoại: 0775895973
 Linkedin: https://www.linkedin.com/in/l%C6%B0u-%C4%91%E1%BB%A9c-d%C5%A9ng-15b3143a2/
@@ -59,7 +65,8 @@ ${buildProjectsText()}
 - Tự học web development 1 năm
 - Đã build và deploy nhiều dự án cá nhân
 - Đang tìm kiếm vị trí Frontend / Full-stack Developer
-
+- Thực tập tại Công ty TNHH HTDIGI với vị trí WordPress Developer
+- Tham gia các dự án web wordpress và dự án riêng về short link generation link github: https://github.com/dungdev-web/short_link
 --- Học vấn ---
 - Cao đẳng FPT (đã tốt nghiệp)
 - Tìm kiếm cơ hội liên thông trong năm nay
@@ -80,17 +87,25 @@ export async function POST(req: NextRequest) {
 
     const completion = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
-      messages: [
-        { role: "system", content: buildSystemPrompt() },
-        ...messages,
-      ],
+      messages: [{ role: "system", content: buildSystemPrompt() }, ...messages],
       max_tokens: 500,
       temperature: 0.7,
     });
 
     const reply =
       completion.choices[0]?.message?.content ?? "Xin lỗi, có lỗi xảy ra.";
-
+    const userMessages = messages.filter((m: any) => m.role === "user");
+    if (userMessages.length === 1) {
+      notifyChat({
+        question: extractContent(userMessages[0].content),
+        country: req.headers.get("x-vercel-ip-country") ?? undefined,
+        ua: req.headers.get("user-agent") ?? undefined,
+      });
+    }
+    // console.log("messages length:", messages.length);
+    // console.log("first message:", JSON.stringify(messages[0]));
+    // console.log("CHAT_ID:", process.env.TELEGRAM_CHAT_ID);
+    // console.log("BOT_TOKEN exists:", !!process.env.TELEGRAM_BOT_TOKEN);
     return NextResponse.json({ reply });
   } catch (error) {
     console.error("Groq API error:", error);
