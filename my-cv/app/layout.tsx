@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import Loader from "@/components/Loader";
 import { I18nProvider } from "@/lib/i18n";
 import { usePageTracking } from './hooks/usePageTracking';
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const CustomCursor = dynamic(() => import("@/components/CustomCursor"), { ssr: false });
 const Toaster = dynamic(() => import("sonner").then((mod) => mod.Toaster), { ssr: false });
@@ -48,6 +49,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </I18nProvider>
         </Providers>
       </body>
+            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
+
     </html>
   );
 }
