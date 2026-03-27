@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/lib/i18n";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Flame,Github } from "lucide-react";
@@ -36,6 +37,7 @@ function gridColor(count: number) {
   return "bg-violet-400";
 }
 
+
 function timeAgo(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime();
   const days = Math.floor(diff / 86400000);
@@ -49,6 +51,7 @@ function timeAgo(dateStr: string) {
 export default function GitHubStats() {
   const [data, setData] = useState<GitHubData | null>(null);
   const [error, setError] = useState(false);
+  const { t } = useI18n();
 
   useEffect(() => {
     fetch("/api/github-stats")
@@ -73,11 +76,11 @@ export default function GitHubStats() {
     <section className="w-full  mx-auto px-4 py-12 space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
-         <div className="flex items-center gap-2"> <Github/>  <h2 className="text-2xl font-medium">GitHub Activity</h2></div>
+         <div className="flex items-center gap-2"> <Github/>  <h2 className="text-2xl font-medium">{t.github.title}</h2></div>
         {data?.streak ? (
           <span className="flex items-center gap-1.5 text-sm text-orange-400 font-medium">
             <span className="text-base"><Flame /></span>
-            {data.streak} ngày streak
+            {data.streak} {t.github.streak}
           </span>
         ) : (
           <div className="h-5 w-24 rounded animate-pulse" />
@@ -109,7 +112,7 @@ export default function GitHubStats() {
 
       {/* Contribution grid */}
       <div className="rounded-xl border  p-4">
-        <p className="text-xs  mb-3">Contribution — 20 tuần gần nhất</p>
+        <p className="text-xs  mb-3">Contribution — {t.github.contribution}</p>
         {data ? (
           <div className="flex gap-1 overflow-x-auto pb-1">
             {data.contributionGrid.map((week, wi) => (
@@ -141,7 +144,7 @@ export default function GitHubStats() {
       <div className="grid sm:grid-cols-2 gap-4">
         {/* Top languages */}
         <div className="rounded-xl border  p-4 space-y-3">
-          <p className="text-xs ">Top languages</p>
+          <p className="text-xs ">{t.github.language}</p>
           {data ? (
             <>
               {/* Color bar */}
@@ -181,7 +184,7 @@ export default function GitHubStats() {
 
         {/* Recent commits */}
         <div className="rounded-xl border  p-4 space-y-3">
-          <p className="text-xs ">Recent commits</p>
+          <p className="text-xs ">{t.github.commit}</p>
           {data ? (
             <div className="space-y-3">
               {data.recentCommits.length === 0 ? (

@@ -8,6 +8,7 @@ export interface Project {
   fullDescriptionVi?: string;
   image: string;
   tags: string[];
+  techStack:string[];
   features?: string[];
   featuresVi?: string[];
   demo?: string;

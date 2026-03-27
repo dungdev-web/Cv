@@ -5,10 +5,6 @@ const groq = new OpenAI({
   apiKey: process.env.GROQ_API_KEY!,
   baseURL: "https://api.groq.com/openai/v1",
 });
-
-// Danh sách projects — thêm projects của bạn vào đây
-
-
 export async function POST(req: NextRequest) {
   try {
     const { jd } = await req.json();
@@ -18,7 +14,7 @@ export async function POST(req: NextRequest) {
     }
 
     const projectsText = projects.map(
-      (p) => `- ${p.title} | Stack: ${p.tags.join(", ")} | Mô tả: ${p.description}`
+      (p) => `- ${p.title} | Stack: ${p.techStack.join(", ")} |Tag: ${p.tags.join(", ")} | Mô tả: ${p.fullDescription}`
     ).join("\n");
 
     const prompt = `Recruiter yêu cầu: "${jd}"

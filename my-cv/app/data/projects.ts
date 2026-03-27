@@ -12,7 +12,8 @@ export const projects: Project[] = [
     fullDescriptionVi:
       "Ứng dụng quản lý công việc toàn diện giúp bạn tổ chức các nhiệm vụ hàng ngày. Tính năng bao gồm tạo, chỉnh sửa, xóa công việc với lưu trữ bền vững bằng localStorage. Hỗ trợ lọc theo trạng thái và ngày đến hạn.",
     image: "/todo.png",
-    tags: ["React", "Tailwind", "Node.js", "MUI", "Framer Motion","MySQL"],
+    tags: ["React", "Tailwind", "Node.js", "MUI", "Framer Motion", "MySQL"],
+    techStack: ["React", "Node.js","Tailwind", "MySQL"],
     features: [
       "Add/Edit/Delete tasks",
       "Filter by status",
@@ -27,7 +28,7 @@ export const projects: Project[] = [
     ],
     demo: "https://quan-ly-thoi-gian.vercel.app/",
     github: "https://github.com/dungdev-web/quan_ly_thoi_gian",
-    type: "Fullstack"
+    type: "Fullstack",
   },
   {
     id: "auth-ui",
@@ -42,6 +43,7 @@ export const projects: Project[] = [
       "Giao diện xác thực đẹp và đầy đủ chức năng với validation form. Hỗ trợ cả luồng đăng nhập và đăng ký với phản hồi validation theo thời gian thực, chỉ số độ mạnh mật khẩu và xử lý lỗi.",
     image: "/login.png",
     tags: ["React", "MUI"],
+    techStack: ["React"],
     features: [
       "Form validation",
       "Password strength meter",
@@ -56,21 +58,22 @@ export const projects: Project[] = [
     ],
     demo: "#",
     github: "https://github.com/dungdev-web/Login_MUI",
-    type: "Frontend"
+    type: "Frontend",
   },
   {
     id: "portfolio",
     title: "Personal Portfolio",
     titleVi: "Portfolio Cá nhân",
-    description: "My portfolio built with Next.js, Tailwind and Framer Motion.",
+    description: "My portfolio built with NextJS, Tailwind and Framer Motion.",
     descriptionVi:
-      "Portfolio của tôi được xây dựng với Next.js, Tailwind và Framer Motion.",
+      "Portfolio của tôi được xây dựng với NextJS, Tailwind và Framer Motion.",
     fullDescription:
       "A modern, interactive portfolio website showcasing my work and skills. Built with cutting-edge technologies, featuring smooth animations, dark mode support, and optimized performance.",
     fullDescriptionVi:
       "Website portfolio hiện đại, tương tác trưng bày công việc và kỹ năng của tôi. Được xây dựng với công nghệ tiên tiến, có animation mượt mà, hỗ trợ dark mode và hiệu năng tối ưu.",
     image: "/porfordio.png",
-    tags: ["Next.js", "Tailwind", "Framer Motion", "React", "Firebase"],
+    tags: ["NextJS", "Tailwind","TypeScript", "Framer Motion", "React", "Firebase"],
+    techStack: ["React", "NextJS","TypeScript","Tailwind", "Firebase Realtime"],
     features: [
       "Smooth animations",
       "Dark mode",
@@ -85,7 +88,7 @@ export const projects: Project[] = [
     ],
     demo: "https://cv-swart-psi-63.vercel.app/",
     github: "https://github.com/dungdev-web/Cv",
-    type: "Fullstack"
+    type: "Fullstack",
   },
   {
     id: "quiz",
@@ -100,6 +103,7 @@ export const projects: Project[] = [
       "Trò chơi quiz hấp dẫn với nhiều danh mục, tính điểm theo thời gian thực và gameplay cạnh tranh. Tính năng bao gồm câu hỏi có giới hạn thời gian, theo dõi chuỗi trả lời đúng và phân tích kết quả chi tiết.",
     image: "/my-quizz.png",
     tags: ["JavaScript", "HTML", "CSS", "Tailwind"],
+    techStack: ["JavaScript","Tailwind"],
     features: [
       "Multiple categories",
       "Timer system",
@@ -114,7 +118,7 @@ export const projects: Project[] = [
     ],
     demo: "https://my-quizz-inky.vercel.app/",
     github: "https://github.com/dungdev-web/my_quizz",
-    type: "Frontend"
+    type: "Frontend",
   },
   {
     id: "weather",
@@ -130,6 +134,7 @@ export const projects: Project[] = [
       "Ứng dụng thời tiết là một web app sử dụng API để hiển thị thông tin thời tiết cho thành phố người dùng tìm kiếm. Ứng dụng cung cấp các thông tin cơ bản như nhiệt độ, độ ẩm, tình trạng thời tiết và dự báo theo ngày.",
     image: "/weather.png",
     tags: ["React", "Tailwind", "API"],
+    techStack: ["React","Tailwind", "Fetch API"],
     features: [
       "City weather search",
       "Temperature & humidity",
@@ -144,7 +149,7 @@ export const projects: Project[] = [
     ],
     demo: "https://weather-ten-livid.vercel.app/",
     github: "https://github.com/dungdev-web/weather",
-    type: "Frontend"
+    type: "Frontend",
   },
   {
     id: "budget",
@@ -160,6 +165,7 @@ export const projects: Project[] = [
       "Ứng dụng quản lý ngân sách cá nhân giúp người dùng theo dõi và quản lý thu nhập và chi tiêu hàng ngày. Ứng dụng hỗ trợ phân loại thu chi và đang phát triển biểu đồ thống kê trực quan theo thời gian và danh mục.",
     image: "/budget.png",
     tags: ["React", "Firebase"],
+    techStack: ["React", "Firebase Realtime"],
     features: [
       "Income/Expense tracking",
       "Category management",
@@ -174,7 +180,7 @@ export const projects: Project[] = [
     ],
     demo: "https://budget-ivory-seven.vercel.app/",
     github: "https://github.com/dungdev-web/budget",
-    type: "Fullstack"
+    type: "Fullstack",
   },
   {
     id: "personal-blog",
@@ -190,6 +196,7 @@ export const projects: Project[] = [
       "Blog cá nhân là website chia sẻ kiến thức lập trình, hỗ trợ viết bài bằng Markdown, phân loại bài viết theo chủ đề và cho phép tìm kiếm nội dung.",
     image: "/blog.png",
     tags: ["React", "Firebase", "Markdown"],
+    techStack: ["React", "Firebase Realtime"],
     features: [
       "Markdown articles",
       "Topic categories",
@@ -204,7 +211,7 @@ export const projects: Project[] = [
     ],
     demo: "https://personal-blog-silk-ten.vercel.app/",
     github: "https://github.com/dungdev-web/personal_blog",
-    type: "Frontend"
+    type: "Frontend",
   },
   {
     id: "ecommerce-shoes",
@@ -220,6 +227,7 @@ export const projects: Project[] = [
       "Ecommerce Shoes là website mua sắm trực tuyến hiện đại chuyên bán giày. Ứng dụng cho phép người dùng duyệt sản phẩm, lọc theo danh mục, xem chi tiết sản phẩm, thêm vào giỏ hàng và tiến hành thanh toán.",
     image: "/nodejs.png",
     tags: ["React", "Tailwind", "MongoDB", "HTML", "Node.js"],
+    techStack: ["React", "Node.js","Tailwind", "MongoDB"],
     features: [
       "Product listing and details",
       "Filter by category, price, brand",
@@ -234,7 +242,7 @@ export const projects: Project[] = [
     ],
     demo: "#",
     github: "https://github.com/dungdev-web/NodeJs",
-    type: "Fullstack"
+    type: "Fullstack",
   },
   {
     id: "ecommerce-hamburger",
@@ -249,7 +257,8 @@ export const projects: Project[] = [
     fullDescriptionVi:
       "Ecommerce Hamburger là website đặt đồ ăn trực tuyến hiện đại chuyên bán hamburger và đồ ăn nhanh. Ứng dụng cho phép người dùng duyệt menu, xem chi tiết món ăn, thêm vào giỏ hàng và đặt hàng.",
     image: "/hamburger.png",
-    tags: ["React", "Tailwind", "MySQL", "Node.js"],
+    tags: ["React", "Tailwind", "NextJS","TypeScript", "MySQL", "Node.js"],
+    techStack: ["React", "NextJS","TypeScript","Tailwind", "Node.js", "MySQL"],
     features: [
       "Menu listing and food details",
       "Add/Remove from cart",
@@ -264,7 +273,7 @@ export const projects: Project[] = [
     ],
     demo: "#",
     github: "https://github.com/dungdev-web/react_web",
-    type: "Fullstack"
+    type: "Fullstack",
   },
   {
     id: "flash-card",
@@ -279,7 +288,8 @@ export const projects: Project[] = [
     fullDescriptionVi:
       "Flash Card English là web app giúp người dùng học và ghi nhớ từ vựng tiếng Anh qua flashcard. Ứng dụng cho phép tạo, xem, sửa và xóa flashcard, luyện tập từ với animation lật thẻ và theo dõi tiến độ học tập.",
     image: "/english.png",
-    tags: ["React", "Tailwind", "Firebase", "Next.js"],
+    tags: ["React", "Tailwind", "Firebase", "NextJS","TypeScript"],
+    techStack: ["React", "NextJS","TypeScript","Tailwind", "Firebase Realtime"],
     features: [
       "Create flashcards",
       "Flip animation",
@@ -294,7 +304,7 @@ export const projects: Project[] = [
     ],
     demo: "https://flash-card-pink-five.vercel.app/login",
     github: "https://github.com/dungdev-web/flash-card",
-    type: "Fullstack"
+    type: "Fullstack",
   },
   {
     id: "chat-realtime",
@@ -310,6 +320,7 @@ export const projects: Project[] = [
       "Chat Realtime là ứng dụng nhắn tin thời gian thực cho phép người dùng giao tiếp tức thì với nhau. Ứng dụng hỗ trợ xác thực người dùng, gửi và nhận tin nhắn theo thời gian thực và hiển thị trạng thái online/offline.",
     image: "/chat.png",
     tags: ["React", "Tailwind", "Firebase", "Socket.io"],
+    techStack: ["React", "Socket.io","Tailwind", "Firebase Realtime"],
     features: [
       "User authentication",
       "Realtime messaging",
@@ -324,7 +335,7 @@ export const projects: Project[] = [
     ],
     demo: "https://chat-social-self.vercel.app/",
     github: "https://github.com/dungdev-web/chat_social",
-    type: "Fullstack"
+    type: "Fullstack",
   },
   {
     id: "short-link",
@@ -341,12 +352,14 @@ export const projects: Project[] = [
     image: "/short-link.png",
     tags: [
       "React",
-      "Next.js",
+      "NextJS",
       "Tailwind",
+      "TypeScript",
       "Node.js",
       "PostgreSQL",
       "Rate Limiting",
     ],
+    techStack: ["React", "NextJS","TypeScript","Tailwind", "Node.js","PostgreSQL"],
     features: [
       "Generate short links",
       "Fast redirect",
@@ -361,7 +374,7 @@ export const projects: Project[] = [
     ],
     demo: "#",
     github: "https://github.com/dungdev-web/short_link",
-    type: "Fullstack"
+    type: "Fullstack",
   },
   {
     id: "real-time-employee",
@@ -384,6 +397,8 @@ export const projects: Project[] = [
       "Socket.io",
       "Rate Limiting",
     ],
+    techStack: ["React", "Socket.io", "Node.js","Firebase Realtime"],
+
     features: [
       "CRUD employee records",
       "Real-time sync with Firebase",
@@ -398,7 +413,7 @@ export const projects: Project[] = [
     ],
     demo: "#",
     github: "https://github.com/dungdev-web/Real-time-employee",
-    type: "Fullstack"
+    type: "Fullstack",
   },
   {
     id: "company-comparison",
@@ -414,12 +429,15 @@ export const projects: Project[] = [
       "Ứng dụng So sánh Công ty được thiết kế cho người tìm việc đang cân nhắc nhiều lời mời làm việc. Người dùng có thể so sánh hai công ty theo các tiêu chí như lương, phúc lợi, văn hóa làm việc, cơ hội phát triển và tech stack.",
     image: "/company.png",
     tags: ["React", "NestJS", "Tailwind", "Excel"],
+    techStack: ["React", "NestJS","Tailwind","Train AI"],
+
     features: [
       "Side-by-side company comparison",
       "Customizable criteria",
       "Weighted scoring system",
       "Export to Excel",
     ],
+    
     featuresVi: [
       "So sánh công ty song song",
       "Tiêu chí tùy chỉnh",
@@ -428,7 +446,7 @@ export const projects: Project[] = [
     ],
     demo: "#",
     github: "https://github.com/dungdev-web/excel_app",
-    type: "Fullstack"
+    type: "Fullstack",
   },
   {
     id: "tera-shoes",
@@ -443,7 +461,18 @@ export const projects: Project[] = [
     fullDescriptionVi:
       "Tera Shoes là nền tảng thương mại điện tử full-stack chuyên bán giày. Ứng dụng mang lại trải nghiệm mua sắm hiện đại với gợi ý sản phẩm bằng AI,thanh toán zalo, trang quản trị toàn diện để quản lý sản phẩm, đơn hàng và người dùng. Được xây dựng với React, NextJS, MySQL và triển khai bằng Docker.",
     image: "/shoes.png",
-    tags: ["React", "NextJS", "Tailwind", "MySQL", "Node.js", "AI", "Docker","ZaloPay"],
+    tags: [
+      "React",
+      "NextJS",
+      "TypeScript",
+      "Tailwind",
+      "MySQL",
+      "Node.js",
+      "AI",
+      "Docker",
+      "ZaloPay",
+    ],
+    techStack: ["React", "NextJS","TypeScript","Tailwind","Node.js","MySQL","Payment","Docker","Train AI"],
     features: [
       "Product listing, search and filter",
       "AI-powered product recommendations",
@@ -461,40 +490,51 @@ export const projects: Project[] = [
     demo: "#",
     githubFe: "https://github.com/dungdev-web/FE-datn-",
     githubBe: "https://github.com/dungdev-web/BE-datn-",
-    type: "Fullstack"
+    type: "Fullstack",
   },
   {
-  id: "image-scanner",
-  title: "Image Scanner Extension",
-  titleVi: "Extension Image Scanner",
-  description:
-    "Chrome Extension that scans all images on the current page and displays them in a SidePanel with search, filter, and AI processing.",
-  descriptionVi:
-    "Chrome Extension quét toàn bộ ảnh trên trang hiện tại, hiển thị trong SidePanel với tìm kiếm, lọc và xử lý AI trực tiếp trên trình duyệt.",
-  fullDescription:
-    "Image Scanner is a Chrome Extension that scans all images on the current webpage — including <img> tags, CSS background-image, <picture>, and SVG <image> — and displays them in a Chrome SidePanel. Built with ReactJS, TypeScript, and TensorFlow.js for in-browser AI processing without any API key. Features include thumbnail preview, image size and URL display, search by URL, size filtering, image count badge on the extension icon, and auto-detection of new images via MutationObserver.",
-  fullDescriptionVi:
-    "Image Scanner là Chrome Extension quét toàn bộ ảnh trên trang web hiện tại — bao gồm thẻ <img>, CSS background-image, <picture> và SVG <image> — và hiển thị trong Chrome SidePanel. Được xây dựng với ReactJS, TypeScript và TensorFlow.js để xử lý AI ngay trên trình duyệt mà không cần API key. Tính năng gồm xem thumbnail, hiển thị kích thước và URL ảnh, tìm kiếm theo URL, lọc theo kích thước, badge số lượng ảnh trên icon và tự động phát hiện ảnh mới qua MutationObserver.",
-  image: "/image-scanner.png",
-  tags: ["React", "TypeScript", "TensorFlow.js", "Ant Design", "AG Grid", "Vite", "Chrome Extension"],
-  features: [
-    "Scan all images: <img>, CSS background-image, <picture>, SVG <image>",
-    "Display thumbnail, image size and URL in a data grid",
-    "Search images by URL",
-    "Filter by size: Small / Medium / Large",
-    "Image count badge on extension icon",
-    "Auto-detect new images with MutationObserver",
-  ],
-  featuresVi: [
-    "Quét tất cả ảnh: <img>, CSS background-image, <picture>, SVG <image>",
-    "Hiển thị thumbnail, kích thước và URL ảnh dạng bảng",
-    "Tìm kiếm ảnh theo URL",
-    "Lọc theo kích thước: Nhỏ / Vừa / Lớn",
-    "Badge số lượng ảnh trên icon extension",
-    "Tự động phát hiện ảnh mới bằng MutationObserver",
-  ],
-  demo: "#",
-  github: "https://github.com/dungdev-web/test_extention",
-  type: "Extension"
-},
+    id: "image-scanner",
+    title: "Image Scanner Extension",
+    titleVi: "Extension Image Scanner",
+    description:
+      "Chrome Extension that scans all images on the current page and displays them in a SidePanel with search, filter, and AI processing.",
+    descriptionVi:
+      "Chrome Extension quét toàn bộ ảnh trên trang hiện tại, hiển thị trong SidePanel với tìm kiếm, lọc và xử lý AI trực tiếp trên trình duyệt.",
+    fullDescription:
+      "Image Scanner is a Chrome Extension that scans all images on the current webpage — including <img> tags, CSS background-image, <picture>, and SVG <image> — and displays them in a Chrome SidePanel. Built with React, TypeScript, and TensorFlow.js for in-browser AI processing without any API key. Features include thumbnail preview, image size and URL display, search by URL, size filtering, image count badge on the extension icon, and auto-detection of new images via MutationObserver.",
+    fullDescriptionVi:
+      "Image Scanner là Chrome Extension quét toàn bộ ảnh trên trang web hiện tại — bao gồm thẻ <img>, CSS background-image, <picture> và SVG <image> — và hiển thị trong Chrome SidePanel. Được xây dựng với React, TypeScript và TensorFlow.js để xử lý AI ngay trên trình duyệt mà không cần API key. Tính năng gồm xem thumbnail, hiển thị kích thước và URL ảnh, tìm kiếm theo URL, lọc theo kích thước, badge số lượng ảnh trên icon và tự động phát hiện ảnh mới qua MutationObserver.",
+    image: "/image-scanner.png",
+    tags: [
+      "React",
+      "TypeScript",
+      "TensorFlow.js",
+      "Ant Design",
+      "AG Grid",
+      "Vite",
+      "Chrome Extension",
+      "NestJS",
+      "WordPress"
+    ],
+    techStack: ["React", "NestJS","TypeScript"],
+    features: [
+      "Scan all images: <img>, CSS background-image, <picture>, SVG <image>",
+      "Display thumbnail, image size and URL in a data grid",
+      "Search images by URL",
+      "Filter by size: Small / Medium / Large",
+      "Image count badge on extension icon",
+      "Auto-detect new images with MutationObserver",
+    ],
+    featuresVi: [
+      "Quét tất cả ảnh: <img>, CSS background-image, <picture>, SVG <image>",
+      "Hiển thị thumbnail, kích thước và URL ảnh dạng bảng",
+      "Tìm kiếm ảnh theo URL",
+      "Lọc theo kích thước: Nhỏ / Vừa / Lớn",
+      "Badge số lượng ảnh trên icon extension",
+      "Tự động phát hiện ảnh mới bằng MutationObserver",
+    ],
+    demo: "#",
+    github: "https://github.com/dungdev-web/test_extention",
+    type: "Extension",
+  },
 ];

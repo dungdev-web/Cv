@@ -93,7 +93,7 @@ const fetchCvData = async () => {
 
     if (res.ok) {
       setStatus("success");
-      setMessage("✅ Upload thành công! CV đã được cập nhật.");
+      setMessage("Upload thành công! CV đã được cập nhật.");
       setFile(null);
       fetchCvData();
     } else {

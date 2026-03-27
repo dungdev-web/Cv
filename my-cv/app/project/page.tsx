@@ -15,7 +15,7 @@ import { useI18n } from "@/lib/i18n";
 import { createPortal } from "react-dom";
 const allTags = [
   "All",
-  ...Array.from(new Set(projects.flatMap((p) => p.tags))),
+  ...Array.from(new Set(projects.flatMap((p) => p.techStack))),
 ];
 const MAX_TAGS = 4;
 
@@ -160,7 +160,7 @@ export default function Projects() {
   const filtered =
     activeTag === "All"
       ? projects
-      : projects.filter((p) => p.tags.includes(activeTag));
+      : projects.filter((p) => p.techStack.includes(activeTag));
 
   return (
     <section

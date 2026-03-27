@@ -143,6 +143,13 @@ export const translations = {
       sending: "Sending...",
       connectWith: "Connect with me",
     },
+    github:{
+      title:'GitHub Activity',
+      language:"Top languages",
+      contribution:"last 20 weeks",
+      commit:"Recent commits",
+      streak:"day streak"
+    },
     footer: {
       description:
         "Frontend Developer crafting modern, fast & beautiful web experiences.",
@@ -291,6 +298,14 @@ export const translations = {
       send: "Gửi tin nhắn",
       sending: "Đang gửi...",
       connectWith: "Kết nối với tôi",
+    },
+     github:{
+      title:'Hoạt động github',
+      language:"Ngôn ngữ chính",
+      contribution:"20 tuần gần nhất",
+      commit:"Commit gần đây",
+      streak:"ngày streak"
+
     },
     footer: {
       description:

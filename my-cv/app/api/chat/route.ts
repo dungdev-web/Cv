@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { projects } from "@/app/data/projects";
+import { certificates } from "@/app/data/certificate";
 import { notifyChat } from "@/lib/telegram";
 const groq = new OpenAI({
   apiKey: process.env.GROQ_API_KEY!,
@@ -22,8 +23,9 @@ const buildProjectsText = () =>
       const lines = [
         `${i + 1}. ${p.titleVi ?? p.title}${p.titleVi && p.titleVi !== p.title ? ` (${p.title})` : ""}`,
         `   Loại: ${p.type ?? "N/A"}`,
-        `   Tech: ${p.tags.join(", ")}`,
-        `   Mô tả: ${p.descriptionVi ?? p.description}`,
+        `   Tech: ${p.techStack.join(", ")}`,
+        `   Thẻ tag liên quan: ${p.tags.join(", ")} `,
+        `   Mô tả: ${p.fullDescriptionVi ?? p.fullDescription}`,
       ];
       if (p.features?.length)
         lines.push(`   Tính năng: ${(p.featuresVi ?? p.features)?.join(", ")}`);
@@ -34,7 +36,17 @@ const buildProjectsText = () =>
       return lines.join("\n");
     })
     .join("\n\n");
-
+const buildCertificatesText = () =>
+  certificates
+    .map((c, i) => {
+      const lines = [
+        `${i + 1}. ${c.title}`,
+        `   Nguồn: ${c.issuer ?? "N/A"}`,
+        `   Năm: ${c.date}`,
+      ];
+      return lines.join("\n");
+    })
+    .join("\n\n");
 const buildSystemPrompt = () => {
   const privateInfo = process.env.AI_KNOWLEDGE_BASE ?? "";
   return `
@@ -56,7 +68,8 @@ Tools: Git, Vercel, Figma, VS Code
 
 --- Dự án (${projects.length} projects) ---
 ${buildProjectsText()}
-
+--- Chứng Chỉ liên quan ---
+${buildCertificatesText()}
 --- Kinh nghiệm ---
 - Sinh viên CNTT đã tốt nghiệp cao đẳng
 - Tự học web development 1 năm

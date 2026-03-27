@@ -117,7 +117,7 @@ export default function AIChatbot() {
       </div>
 
       {/* Messages */}
-      <div className="h-[300px] overflow-y-auto flex flex-col gap-3 mb-3">
+      <div className=" overflow-y-auto flex flex-col gap-3 mb-3">
         <AnimatePresence initial={false}>
           {messages.map((msg, i) => (
             <motion.div
