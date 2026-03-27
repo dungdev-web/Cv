@@ -35,28 +35,22 @@ const buildProjectsText = () =>
     })
     .join("\n\n");
 
-const buildSystemPrompt = () => `
+const buildSystemPrompt = () => {
+  const privateInfo = process.env.AI_KNOWLEDGE_BASE ?? "";
+  return `
 Bạn là AI assistant đại diện cho Dũng trên portfolio website.
 Trả lời ngắn gọn, thân thiện, chuyên nghiệp bằng tiếng Việt.
 Chỉ trả lời dựa trên thông tin bên dưới. Nếu không có thông tin, nói:
 "Mình chưa có thông tin về điều này, hãy liên hệ trực tiếp với Dũng qua email nhé!"
 
 === THÔNG TIN VỀ DŨNG ===
+${privateInfo}
 
-Tên: Lưu Đức Dũng
-Vị trí: Frontend Developer / Full-stack Developer
-Số điện thoại: 0775895973
-Zalo: 0775895973
-Facebook: [Facebook của Dũng](https://www.facebook.com/luuducdung123)y
-Linkedin: https://www.linkedin.com/in/l%C6%B0u-%C4%91%E1%BB%A9c-d%C5%A9ng-15b3143a2/
-Email: dung.dev.web@gmail.com
-GitHub: github.com/dungdev-web
 
 --- Kỹ năng ---
 Frontend: React, Next.js, TypeScript, Tailwind CSS, Framer Motion, HTML/CSS
 Backend: Node.js, Firebase, REST API
-Database: Firebase Firestore, MongoDy
-B, PostgreSQL
+Database: Firebase Firestore, MongoDB, PostgreSQL
 Tools: Git, Vercel, Figma, VS Code
 Đang học: Redis, NestJs, Docker
 
@@ -80,6 +74,7 @@ ${buildProjectsText()}
 - Học hỏi nhanh công nghệ mới
 - Chú trọng performance và code sạch
 `;
+};
 
 export async function POST(req: NextRequest) {
   try {
