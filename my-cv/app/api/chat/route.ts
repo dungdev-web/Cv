@@ -1,12 +1,49 @@
-import { NextRequest, NextResponse } from "next/server";
+// ============================================================
+// app/api/chat/route.ts — v3
+//
+// Upgrade so với v2:
+//   ✅ Fix: trackProjectMention gọi 2 lần → chỉ 1 lần
+//   ✅ Fix: web_search_needed thực sự gọi Tavily
+//   ✅ Fix: buildRecommendationContext async đúng cách
+//   🆕 Rate limiting via Redis (10 req / 60s / IP)
+//   🆕 Streaming response (Server-Sent Events)
+//   🆕 Analytics: ghi intent vào Redis để dashboard đọc
+// ============================================================
+
+import { NextRequest } from "next/server";
 import OpenAI from "openai";
+import { Redis } from "@upstash/redis";
 import { projects } from "@/app/data/projects";
 import { certificates } from "@/app/data/certificate";
 import { notifyChat } from "@/lib/telegram";
+import {
+  detectProjectsInText,
+  trackProjectMention,
+  buildRecommendationContext,
+  getAnalyticsSnapshot,
+} from "@/lib/projectTracker";
+import { detectIntent, type Intent } from "@/lib/intentDetector";
+
+// ─── Clients ───────────────────────────────────────────────
 const groq = new OpenAI({
   apiKey: process.env.GROQ_API_KEY!,
   baseURL: "https://api.groq.com/openai/v1",
 });
+
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL!,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+});
+
+// ─── ① Sliding window ──────────────────────────────────────
+const MAX_MESSAGES = 12;
+
+function trimMessages(messages: any[]): any[] {
+  if (messages.length <= MAX_MESSAGES) return messages;
+  return messages.slice(-MAX_MESSAGES);
+}
+
+// ─── Helpers ───────────────────────────────────────────────
 function extractContent(content: unknown): string {
   if (typeof content === "string") return content;
   if (Array.isArray(content)) {
@@ -17,184 +54,298 @@ function extractContent(content: unknown): string {
   }
   return String(content ?? "");
 }
+
+// ─── Data builders ─────────────────────────────────────────
 const buildProjectsText = () =>
   projects
     .map((p, i) => {
       const lines = [
-        `${i + 1}. ${p.titleVi ?? p.title}${p.titleVi && p.titleVi !== p.title ? ` (${p.title})` : ""}`,
-        `   Loại: ${p.type ?? "N/A"}`,
+        `${i + 1}. ${p.titleVi ?? p.title}`,
         `   Tech: ${p.techStack.join(", ")}`,
-        `   Thẻ tag liên quan: ${p.tags.join(", ")} `,
+        `   Tags: ${p.tags.join(", ")}`,
         `   Mô tả: ${p.fullDescriptionVi ?? p.fullDescription}`,
       ];
       if (p.features?.length)
         lines.push(`   Tính năng: ${(p.featuresVi ?? p.features)?.join(", ")}`);
       if (p.demo) lines.push(`   Demo: ${p.demo}`);
       if (p.github) lines.push(`   GitHub: ${p.github}`);
-      if (p.githubFe) lines.push(`   GitHub FE: ${p.githubFe}`);
-      if (p.githubBe) lines.push(`   GitHub BE: ${p.githubBe}`);
       return lines.join("\n");
     })
     .join("\n\n");
+
 const buildCertificatesText = () =>
   certificates
-    .map((c, i) => {
-      const lines = [
-        `${i + 1}. ${c.title}`,
-        `   Nguồn: ${c.issuer ?? "N/A"}`,
-        `   Năm: ${c.date}`,
-      ];
-      return lines.join("\n");
-    })
-    .join("\n\n");
-    const buildFeaturedProjectsText = () => `
-=== DỰ ÁN NỔI BẬT ===
+    .map((c, i) => `${i + 1}. ${c.title} — ${c.issuer ?? "N/A"} (${c.date})`)
+    .join("\n");
 
-1. Todo App
-   Mô tả: Ứng dụng quản lý công việc cá nhân với đầy đủ tính năng CRUD, hỗ trợ phân loại theo danh mục, đánh dấu ưu tiên, và lọc theo trạng thái.
-   Tech: React, Node.js, MySQL, REST API
-   Tính năng nổi bật:
-   - Thêm, sửa, xoá task (CRUD hoàn chỉnh)
-   - Phân loại task theo danh mục / tag
-   - Filter: Tất cả / Đang làm / Hoàn thành
-   - Backend REST API với Node.js kết nối MySQL
-   - UI responsive với Tailwind CSS
-   - Ai tự tạo task, xóa task theo yêu cầu người dùng và tự động sắp xếp task theo deadline
-   Điểm học được: Thiết kế REST API từ đầu, quản lý state phức tạp hơn với nhiều filter, triển khai full-stack app đơn giản. Đây là dự án đầu tiên Dũng build để học cách thiết kế API và quản lý dữ liệu từ backend, sau này đã áp dụng kinh nghiệm này vào các dự án phức tạp hơn như Tera Shoes.
-   Tính năng sắp tới: Tích hợp thêm tính năng nhắc nhở (reminder) cho task, và AI tự động phân loại task vào các danh mục dựa trên nội dung mô tả.
-2. Flashcard App
-   Mô tả: Ứng dụng học từ vựng / ghi nhớ kiến thức theo phương pháp thẻ ghi nhớ (flashcard), hỗ trợ lật thẻ và tự tạo bộ thẻ cá nhân.
-   Tech: React, NextJS, TypeScript, Tailwind CSS, Firebase
-   Tính năng nổi bật:
-   - Tạo, chỉnh sửa, xoá bộ thẻ (deck) và từng thẻ
-   - Hiệu ứng lật thẻ 3D (CSS transform)
-   - Chế độ ôn tập: hiển thị lần lượt từng thẻ, đánh dấu đã thuộc / chưa thuộc
-   - Lưu tiến độ học vào Firestore
-   - UI đơn giản, tập trung vào trải nghiệm học tập
-   - Ai hỗ trợ người học và nói chuyện như một tutor, giúp giải thích từ vựng hoặc khái niệm trên thẻ khi người dùng yêu cầu
-   - Phân quyền đơn giản cho phép người dùng tạo bộ thẻ riêng tư hoặc công khai chia sẻ với người khác
-   - Tích hợp tính năng trả phí để mở khoá các bộ thẻ cao cấp, dùng VNPay(sanbox) để mô phỏng quy trình thanh toán
-   Điểm học được: CSS 3D animation, UX học tập, tích hợp Firebase cho backend, xây dựng tính năng AI tutor hỗ trợ học tập. Đây là dự án giúp Dũng học cách tạo trải nghiệm người dùng tương tác và tích hợp AI vào ứng dụng học tập.
-   Tính năng sắp tới: Tích hợp thêm các thuật toán lặp lại ngắt quãng (spaced repetition) để tối ưu hoá hiệu quả học tập, và mở rộng tính năng chia sẻ bộ thẻ giữa người dùng và xóa thẻ khi người dùng đã thuộc trong vòng 30 ngày,...
-3. 👟 Tera Shoes — E-commerce bán giày
-   Mô tả: Website thương mại điện tử bán giày đầy đủ chức năng, từ duyệt sản phẩm đến thanh toán. Đây là một trong những dự án phức tạp nhất Dũng đã build.
-   Tech: Next.js,React, Docker, TypeScript, Tailwind CSS, Node.js, MySQL , REST API
-   Tính năng nổi bật:
-   - Trang danh sách sản phẩm với filter theo size, màu sắc, giá
-   - Trang chi tiết sản phẩm với gallery ảnh
-   - Giỏ hàng (cart) — thêm/xoá/cập nhật số lượng, lưu vào database
-   - Quy trình checkout: nhập thông tin giao hàng, xác nhận đơn
-   - Quản lý đơn hàng phía admin (với authentication đơn giản)
-   - UI hiện đại, tối ưu mobile-first
-   - Ai recommend sản phẩm dựa trên lịch sử duyệt và mua hàng (dùng thuật toán gợi ý đơn giản)
-   Điểm học được: Thiết kế API RESTful, UX e-commerce, quản lý state phức tạp (giỏ hàng), triển khai ứng dụng full-stack, tích hợp AI recommendation.
+function buildSkillsText(): string {
+  return `Frontend: React, Next.js, TypeScript, Tailwind CSS, Framer Motion
+Backend: Node.js, Firebase, REST API, NestJS (đang học)
+Database: Firestore, MongoDB, PostgreSQL, Redis (đang học)
+Tools: Git, Vercel, Docker (đang học), Figma
 
-4. Company Comparison App
-   Mô tả: Ứng dụng giúp người dùng so sánh thông tin giữa các công ty (quy mô, ngành nghề, chỉ số...) một cách trực quan.
-   Tech: React, TypeScript, Tailwind CSS, REST API / dữ liệu tĩnh, Excel
-   Tính năng nổi bật:
-   - Tìm kiếm và chọn nhiều công ty để so sánh song song
-   - Hiển thị bảng so sánh các chỉ số theo cột
-   - Biểu đồ trực quan hoá dữ liệu (Chart.js hoặc Recharts)
-   - Giao diện rõ ràng, dễ đọc dù nhiều dữ liệu
-    - Dữ liệu có thể được lấy từ API hoặc lưu trữ tĩnh dưới dạng JSON/Excel
-    - Ai hỗ trợ giải thích ý nghĩa của các chỉ số và so sánh giữa các công ty khi người dùng yêu cầu
-   Điểm học được: Data visualization, thiết kế UI dạng bảng phức tạp, xử lý dữ liệu so sánh
-  Tính năng sắp tới: Tích hợp thêm các chỉ số và dữ liệu thời gian thực, và cải thiện phần giải thích AI để cung cấp insights sâu hơn về sự khác biệt giữa các công ty và áp dụng các tài liệu từ các trang tuyển dụng như TOPCV, ITViec,... để phân tích
-5. Personal Blog — AI-powered
-   Mô tả: Blog cá nhân nơi Dũng chia sẻ kiến thức lập trình và kinh nghiệm học web. Điểm đặc biệt là tích hợp Cohere AI để hỗ trợ tạo nội dung bài viết.
-   Tech: Next.js, TypeScript, Tailwind CSS, Cohere AI API, Firebase / MDX
-   Tính năng nổi bật:
-   - Viết và đăng bài blog với Markdown / MDX
-   - Tích hợp Cohere AI để generate draft bài viết từ tiêu đề / chủ đề
-   - Trang danh sách bài viết theo tag / danh mục
-   - Trang chi tiết bài viết với layout đọc thoải mái
-   - Hiện tại đang trong giai đoạn phát triển, chưa có nhiều bài viết
-   Ghi chú thành thật: Đây là dự án Dũng đang build và cải thiện dần, AI generate content vẫn đang được tinh chỉnh để ra bài chất lượng hơn.
-   Điểm học được: Tích hợp LLM API (Cohere), MDX rendering, content-driven architecture
-   Tính năng sắp tới: Cải thiện chất lượng AI-generated content, thêm tính năng tương tác cho người đọc (bình luận, đánh giá), và tối ưu SEO cho blog và thêm đăng nhập người dùng.
-`;
-const buildSystemPrompt = () => {
+Chứng chỉ:
+${buildCertificatesText()}`;
+}
+
+function getContactText(): string {
+  return process.env.AI_KNOWLEDGE_BASE ?? "Liên hệ qua portfolio website.";
+}
+
+// ─── 🆕 Rate limiter (Redis sliding window) ────────────────
+// 10 request / 60 giây / IP
+const RATE_LIMIT = 10;
+const RATE_WINDOW_SEC = 60;
+
+async function checkRateLimit(
+  ip: string
+): Promise<{ allowed: boolean; remaining: number; retryAfter: number }> {
+  const key = `rl:chat:${ip}`;
+  const now = Date.now();
+  const windowStart = now - RATE_WINDOW_SEC * 1000;
+
+  const pipe = redis.pipeline();
+  pipe.zremrangebyscore(key, 0, windowStart); // xoá request hết hạn
+  pipe.zadd(key, { score: now, member: String(now) }); // thêm request mới
+  pipe.zcard(key); // đếm trong window
+  pipe.expire(key, RATE_WINDOW_SEC); // auto-cleanup
+  const results = await pipe.exec();
+
+  const count = results[2] as number;
+  const allowed = count <= RATE_LIMIT;
+
+  return {
+    allowed,
+    remaining: Math.max(0, RATE_LIMIT - count),
+    retryAfter: allowed ? 0 : RATE_WINDOW_SEC,
+  };
+}
+
+// ─── ⑤ Web search via Tavily ──────────────────────────────
+async function webSearch(query: string): Promise<string> {
+  const key = process.env.TAVILY_API_KEY;
+  if (!key) return "";
+
+  try {
+    const res = await fetch("https://api.tavily.com/search", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        api_key: key,
+        query,
+        search_depth: "basic",
+        max_results: 3,
+        include_answer: true,
+      }),
+    });
+
+    const data = await res.json();
+    if (data.answer) return `\n=== KẾT QUẢ TÌM KIẾM ===\n${data.answer}\n`;
+
+    if (data.results?.length) {
+      const snippets = (data.results as any[])
+        .slice(0, 3)
+        .map((r) => `• ${r.title}: ${String(r.content ?? "").slice(0, 200)}`)
+        .join("\n");
+      return `\n=== KẾT QUẢ TÌM KIẾM ===\n${snippets}\n`;
+    }
+  } catch (err) {
+    console.error("Tavily error:", err);
+  }
+  return "";
+}
+
+// ─── Analytics: ghi intent vào Redis ──────────────────────
+async function trackIntent(intent: Intent) {
+  await redis.zincrby("intent_counts", 1, intent).catch(() => {});
+}
+
+// ─── System prompt ─────────────────────────────────────────
+function buildSystemPrompt(
+  injectedData: string,
+  recommendationContext: string
+): string {
   const privateInfo = process.env.AI_KNOWLEDGE_BASE ?? "";
-  return `
-Bạn là AI assistant đại diện cho Dũng trên portfolio website.
+  return `Bạn là AI assistant đại diện cho Dũng trên portfolio website.
 Trả lời ngắn gọn, thân thiện, chuyên nghiệp bằng tiếng Việt.
-Sử dụng Markdown để định dạng câu trả lời cho dễ đọc:
-- Dùng **bold** để nhấn mạnh từ khoá quan trọng
-- Dùng danh sách gạch đầu dòng (-) khi liệt kê tính năng, kỹ năng
-- Dùng \`code\` cho tên công nghệ, thư viện (vd: \`React\`, \`MySQL\`)
-- Dùng ### để tạo tiêu đề nhỏ nếu câu trả lời dài
-- Không dùng bảng, không dùng quá nhiều heading — giữ gọn gàng
-Chỉ trả lời dựa trên thông tin bên dưới. Nếu không có thông tin, nói:
-"Mình chưa có thông tin về điều này, hãy liên hệ trực tiếp với Dũng qua email nhé!"
+Sử dụng Markdown để định dạng (bold, list, \`code\`).
+Chỉ trả lời dựa trên thông tin được cung cấp. Nếu không biết, nói:
+"Mình chưa có thông tin, hãy liên hệ trực tiếp với Dũng qua email nhé!"
+${privateInfo ? `\n=== THÔNG TIN CƠ BẢN ===\n${privateInfo}` : ""}
+Kinh nghiệm: Sinh viên CNTT (Cao đẳng FPT), tự học web 1 năm, thực tập WordPress tại HTDIGI.
+Tình trạng: Đang tìm kiếm vị trí Frontend / Full-stack Developer.
+${injectedData}${recommendationContext}`;
+}
 
-=== THÔNG TIN VỀ DŨNG ===
-${privateInfo}
+// ─── 🆕 SSE stream builder ─────────────────────────────────
+function buildSSEStream(
+  groqStream: AsyncIterable<OpenAI.Chat.ChatCompletionChunk>,
+  intent: Intent
+): ReadableStream<Uint8Array> {
+  const encoder = new TextEncoder();
+  const send = (payload: object) =>
+    encoder.encode(`data: ${JSON.stringify(payload)}\n\n`);
 
+  return new ReadableStream({
+    async start(controller) {
+      // Gửi metadata trước để client biết intent
+      controller.enqueue(send({ type: "meta", intent }));
 
---- Kỹ năng ---
-Frontend: React, Next.js, TypeScript, Tailwind CSS, Framer Motion, HTML/CSS
-Backend: Node.js, Firebase, REST API
-Database: Firebase Firestore, MongoDB, PostgreSQL
-Tools: Git, Vercel, Figma, VS Code
-Đang học: Redis, NestJs, Docker
+      try {
+        for await (const chunk of groqStream) {
+          const delta = chunk.choices[0]?.delta?.content;
+          if (delta) {
+            controller.enqueue(send({ type: "text", content: delta }));
+          }
+          if (chunk.choices[0]?.finish_reason === "stop") {
+            controller.enqueue(send({ type: "done" }));
+          }
+        }
+      } catch {
+        controller.enqueue(send({ type: "error", message: "Stream lỗi." }));
+      } finally {
+        controller.close();
+      }
+    },
+  });
+}
 
---- Dự án (${projects.length} projects) ---
-${buildProjectsText()}
-${buildFeaturedProjectsText()}
---- Chứng Chỉ liên quan ---
-${buildCertificatesText()}
---- Kinh nghiệm ---
-- Sinh viên CNTT đã tốt nghiệp cao đẳng
-- Tự học web development 1 năm
-- Đã build và deploy nhiều dự án cá nhân
-- Đang tìm kiếm vị trí Frontend / Full-stack Developer
-- Thực tập tại Công ty TNHH HTDIGI với vị trí WordPress Developer
-- Tham gia các dự án web wordpress và dự án riêng về short link generation link github: https://github.com/dungdev-web/short_link
---- Học vấn ---
-- Cao đẳng FPT (đã tốt nghiệp)
-- Tìm kiếm cơ hội liên thông trong năm nay
---- Tình trạng hôn nhân ---
-- Độc thân
---- Điểm mạnh ---
-- Đam mê UI/UX đẹp và animations
-- Học hỏi nhanh công nghệ mới
-- Chú trọng performance và code sạch
-`;
-};
-
+// ─── Main handler ──────────────────────────────────────────
 export async function POST(req: NextRequest) {
   try {
-    const { messages } = await req.json();
+    // 🆕 Rate limiting
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      req.headers.get("x-real-ip") ??
+      "unknown";
 
-    if (!messages || !Array.isArray(messages)) {
-      return NextResponse.json({ error: "Invalid messages" }, { status: 400 });
+    const { allowed, remaining, retryAfter } = await checkRateLimit(ip);
+
+    if (!allowed) {
+      return new Response(
+        JSON.stringify({
+          error: `Quá nhiều yêu cầu. Thử lại sau ${retryAfter} giây.`,
+        }),
+        {
+          status: 429,
+          headers: {
+            "Content-Type": "application/json",
+            "Retry-After": String(retryAfter),
+            "X-RateLimit-Remaining": "0",
+          },
+        }
+      );
     }
 
+    const body = await req.json();
+    const { messages, stream: wantsStream = true } = body;
+
+    if (!messages || !Array.isArray(messages)) {
+      return new Response(JSON.stringify({ error: "Invalid messages" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // ① Sliding window
+    const trimmed = trimMessages(messages);
+    const userMessages = trimmed.filter((m: any) => m.role === "user");
+    const lastUserText = extractContent(
+      userMessages[userMessages.length - 1]?.content ?? ""
+    );
+
+    // ② Intent detection + analytics
+    const intent = detectIntent(lastUserText);
+    trackIntent(intent).catch(() => {}); // fire-and-forget
+
+    // ③ Project tracking — 1 lần duy nhất (fix bug)
+    const mentionedProjects = detectProjectsInText(lastUserText);
+    await Promise.all(mentionedProjects.map(trackProjectMention));
+
+    // Recommendation (async)
+    const recommendationContext =
+      intent === "project_inquiry"
+        ? ""
+        : await buildRecommendationContext(mentionedProjects);
+
+    // ④ Inject data theo intent
+    let injectedData = "";
+
+    if (intent === "project_inquiry") {
+      injectedData = `\n=== DỰ ÁN ===\n${buildProjectsText()}`;
+    } else if (intent === "skill_inquiry") {
+      injectedData = `\n=== KỸ NĂNG ===\n${buildSkillsText()}`;
+    } else if (intent === "contact_inquiry" || intent === "hiring_inquiry") {
+      injectedData = `\n=== LIÊN HỆ ===\n${getContactText()}`;
+    } else if (intent === "web_search_needed") {
+      // ✅ Fix: thực sự gọi Tavily
+      injectedData = await webSearch(lastUserText);
+    }
+
+    const systemPrompt = buildSystemPrompt(injectedData, recommendationContext);
+
+    // Telegram notify (fire-and-forget, chỉ turn đầu)
+    if (userMessages.length === 1) {
+      getAnalyticsSnapshot()
+        .then((snapshot) =>
+          notifyChat({
+            question: lastUserText,
+            country: req.headers.get("x-vercel-ip-country") ?? undefined,
+            ua: req.headers.get("user-agent") ?? undefined,
+            intent,
+            topProjects: JSON.stringify(snapshot),
+          } as any)
+        )
+        .catch(() => {});
+    }
+
+    const llmMessages = [
+      { role: "system" as const, content: systemPrompt },
+      ...trimmed,
+    ];
+
+    // 🆕 Streaming path
+    if (wantsStream) {
+      const groqStream = await groq.chat.completions.create({
+        model: "llama-3.3-70b-versatile",
+        messages: llmMessages,
+        max_tokens: 800,
+        temperature: 0.7,
+        stream: true,
+      });
+
+      return new Response(buildSSEStream(groqStream, intent), {
+        headers: {
+          "Content-Type": "text/event-stream",
+          "Cache-Control": "no-cache",
+          Connection: "keep-alive",
+          "X-RateLimit-Remaining": String(remaining),
+        },
+      });
+    }
+
+    // Non-streaming fallback
     const completion = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
-      messages: [{ role: "system", content: buildSystemPrompt() }, ...messages],
-      max_tokens: 500,
+      messages: llmMessages,
+      max_tokens: 800,
       temperature: 0.7,
     });
 
     const reply =
       completion.choices[0]?.message?.content ?? "Xin lỗi, có lỗi xảy ra.";
-    const userMessages = messages.filter((m: any) => m.role === "user");
-    if (userMessages.length === 1) {
-      notifyChat({
-        question: extractContent(userMessages[0].content),
-        country: req.headers.get("x-vercel-ip-country") ?? undefined,
-        ua: req.headers.get("user-agent") ?? undefined,
-      });
-    }
-    // console.log("messages length:", messages.length);
-    // console.log("first message:", JSON.stringify(messages[0]));
-    // console.log("CHAT_ID:", process.env.TELEGRAM_CHAT_ID);
-    // console.log("BOT_TOKEN exists:", !!process.env.TELEGRAM_BOT_TOKEN);
-    return NextResponse.json({ reply });
+
+    return new Response(JSON.stringify({ reply, intent }), {
+      headers: {
+        "Content-Type": "application/json",
+        "X-RateLimit-Remaining": String(remaining),
+      },
+    });
   } catch (error) {
-    console.error("Groq API error:", error);
-    return NextResponse.json({ error: "Lỗi kết nối API" }, { status: 500 });
+    console.error("Chat API error:", error);
+    return new Response(JSON.stringify({ error: "Lỗi kết nối API" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
